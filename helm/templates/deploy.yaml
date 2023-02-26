@@ -6,7 +6,7 @@ metadata:
   labels:
     app: {{ template "appname" .}}
 spec:
-  replicas: 4
+  replicas: 1
   selector:
     matchLabels:
       app: {{ template "appname" .}}
@@ -21,7 +21,7 @@ spec:
       serviceAccountName: {{ template "appname" .}}
       containers:
       - name: anomaly-operator
-        image: {{ .Values.global.account }}.dkr.ecr.{{ .Values.global.region }}.amazonaws.com/{{ .Values.anomaly_operator.image | default "master/anomaly-operator:0.0.1" }}
+        image: {{ .Values.global.account }}.dkr.ecr.{{ .Values.global.region }}.amazonaws.com/{{ (.Values.anomaly_operator).image | default "master/anomaly-operator:0.0.1" }}
         ports:
         - containerPort: 80
         env:
