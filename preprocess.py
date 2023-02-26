@@ -2,17 +2,6 @@ import json
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-from sklearn.metrics import r2_score
-import sys
-# import plotly.graph_objects as go
-import seaborn as sns
-from sklearn.feature_extraction.text import CountVectorizer
-
-
-
-from sklearn.model_selection import train_test_split
-
-from sklearn.linear_model import LogisticRegression
 import warnings
 import logging
 warnings.simplefilter(action='ignore', category=FutureWarning)
