@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "appname" .}}
+  namespace: default
+  labels:
+    app: {{ template "appname" .}}
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: {{ template "appname" .}}
+  revisionHistoryLimit: 2
+  template:
+    metadata:
+      annotations:
+        deploy_reason: {{ .Values.reason }}
+      labels:
+        app: {{ template "appname" .}}
+    spec:
+      serviceAccountName: {{ template "appname" .}}
+      containers:
+      - name: anomaly-operator
+        image: {{ .Values.global.account }}.dkr.ecr.{{ .Values.global.region }}.amazonaws.com/{{ .Values.anomaly_operator.image | default "master/anomaly_operator:0.0.1" }}
+        ports:
+        - containerPort: 80
+        env:
+          - name: LOG_LEVEL
+            value: "WARNING"
+        resources:
+          requests:
+            cpu: 500m
+            memory: 1G
+          limits:
+            cpu: 500m
+            memory: 1G
+        # livenessProbe:
+        #   httpGet:
+        #     path: /health
+        #     port: 8080
+        #   initialDelaySeconds: 7
+        #   timeoutSeconds: 3
+        #   failureThreshold: 4
+        #   periodSeconds: 10
+        # readinessProbe:
+        #   httpGet:
+        #     path: /health
+        #     port: 8080
+        #   initialDelaySeconds: 7
+        #   timeoutSeconds: 3
+        #   periodSeconds: 10
+---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: {{ template "appname" .}}
+#   annotations:
+#     alb.ingress.kubernetes.io/healthcheck-port: traffic-port
+#     alb.ingress.kubernetes.io/healthcheck-path: "/health"
+#     alb.ingress.kubernetes.io/healthcheck-interval-seconds: "10"
+#     alb.ingress.kubernetes.io/healthcheck-timeout-seconds: "5"
+#     alb.ingress.kubernetes.io/success-codes: "200"
+#     alb.ingress.kubernetes.io/target-group-attributes: deregistration_delay.timeout_seconds=60
+#     alb.ingress.kubernetes.io/group.name: mgmt-tools-alb
+#   labels:
+#     app: {{ template "appname" .}}
+# spec:
+#   type: NodePort
+#   ports:
+#   - port: 80
+#     targetPort: 8080
+#     protocol: TCP
+#     name: http
+#   selector:
+#       app: {{ template "appname" .}}

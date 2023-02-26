@@ -1,0 +1,15 @@
+# apiVersion: monitoring.coreos.com/v1
+# kind: ServiceMonitor
+# metadata:
+#   name: {{ template "appname" .}}-exporter
+#   namespace: default
+#   labels:
+#     app: {{ template "appname" .}}-exporter
+#     prometheus: system
+# spec:
+#   selector:
+#     matchLabels:
+#       app: {{ template "appname" .}}-exporter
+#   endpoints:
+#   - port: http
+#     interval: "30s"
