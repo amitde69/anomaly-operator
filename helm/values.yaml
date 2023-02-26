@@ -11,4 +11,4 @@ config:
     query: 'sum(kube_pod_labels{pod=~"kphoenix-.*"})'
     detection_window: "14d"
     resolution: 12000
-    sensitivity: 0.1
+    sensitivity: 0.5
