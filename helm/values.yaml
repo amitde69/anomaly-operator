@@ -1,12 +1,14 @@
 config:
   prom_url: "https://prometheus.frp1.ott.kaltura.com"
-  interval_mins: 0.001
+  interval_mins: 15
   queries:
   # - name: "phoenix_avg_cpu"
   #   query: 'avg(rate(container_cpu_usage_seconds_total{pod=~"kphoenix-.*", container!="POD"}[5m])) / avg(container_spec_cpu_quota{pod=~"kphoenix-.*"} / 100000) * 100'
   #   detection_window: "12h"
   #   sensitivity: 100
+  #   resolution: "100"
   - name: "phoenix_pod_num"
     query: 'sum(kube_pod_labels{pod=~"kphoenix-.*"})'
     detection_window: "14d"
-    sensitivity: 1000
+    resolution: "4500"
+    sensitivity: 0.1

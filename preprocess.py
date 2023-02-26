@@ -19,9 +19,9 @@ def preprocess(config):
         ## set configs
         start_time = parse_datetime(query["detection_window"])
         end_time = parse_datetime("now")
-        step = 200
         prom_expression = query["query"]
         sensitivity = float(query["sensitivity"])
+        step = int(query["resolution"])
         query_name = query["name"]
 
         data = prom.custom_query_range(
