@@ -27,16 +27,24 @@ def detect_cycle(config):
         sensitivity = item[2]
         query_name = item[3]
         df["ds"] = df["ds"].apply(to_date)
-
-        m = Prophet(changepoint_prior_scale=sensitivity,changepoint_range=0.8,interval_width=0.95,
-                        weekly_seasonality=True,
-                        daily_seasonality = True,
-                        seasonality_mode='multiplicative')
+        m = Prophet(changepoint_prior_scale=sensitivity,changepoint_range=0.9,
+                    interval_width=0.95,
+                    weekly_seasonality=20,
+                    daily_seasonality=20,
+                    seasonality_mode='multiplicative')
         try:
             m.fit(df)
             future = m.make_future_dataframe(periods=0) 
-
             forecast = m.predict(future)
+            if local == 1:
+                fig = None
+                ax = None
+                figsize=(10, 6)
+                fig = plt.figure(facecolor='w', figsize=figsize)
+                ax = fig.add_subplot(111)
+                ax.set_title(query_name)
+                fig = m.plot(forecast,ax=ax)
+                fig.savefig(f'{query_name}-{i}-forcast.png')
         except Exception as e:
             print()
             logging.error(f"Failing builiding forcast - {e}")
@@ -57,7 +65,7 @@ def detect_cycle(config):
 
         # Get those points that have crossed the threshold
         anomalies  = m.history.iloc[indices] # ------> This has the thresholded values and more important timestamp
-        
+
         if len(anomalies) != 0:
             logging.warning(f"Found {len(anomalies)} anomalies in {query_name}")
             for index, row in anomalies.iterrows():
@@ -72,7 +80,7 @@ def detect_cycle(config):
                 fig = m.plot(forecast,ax=ax)
                 ax.plot(anomalies['ds'].dt.to_pydatetime(), anomalies['y'], 'r.',
                         label='Thresholded data points')
-                fig.savefig(f'podnum_anomaly-{i}-{query_name}.png')
+                fig.savefig(f'{query_name}-{i}-anomaly.png')
         else:
             logging.debug(f"No anomalies found for {query_name}")
         i+=1
