@@ -8,5 +8,5 @@ config:
   #   sensitivity: 100
   - name: "phoenix_pod_num"
     query: 'sum(kube_pod_labels{pod=~"kphoenix-.*"})'
-    detection_window: "7d"
-    sensitivity: 100
+    detection_window: "14d"
+    sensitivity: 1000
