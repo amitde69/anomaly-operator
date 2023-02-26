@@ -15,6 +15,7 @@ spec:
     metadata:
       annotations:
         deploy_reason: {{ .Values.reason }}
+        checksum/config: {{ include (print $.Template.BasePath "/config.yml") . | sha256sum }}
       labels:
         app: {{ template "appname" .}}
     spec:
@@ -26,6 +27,7 @@ spec:
       containers:
       - name: anomaly-operator
         image: {{ .Values.global.account }}.dkr.ecr.{{ .Values.global.region }}.amazonaws.com/{{ (.Values.anomaly_operator).image | default "master/anomaly-operator:0.0.1" }}
+        imagePullPolicy: Always
         ports:
         - containerPort: 80
         env:
