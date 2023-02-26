@@ -1,0 +1,9 @@
+---
+{{ $config := .Values.config }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "appname" .}}-conf
+data:
+  {{ template "appname" .}}-conf.yaml: |
+{{ toYaml $config | indent 4 }}
