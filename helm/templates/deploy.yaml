@@ -18,6 +18,10 @@ spec:
       labels:
         app: {{ template "appname" .}}
     spec:
+      volumes:
+        - name: {{ template "appname" .}}-conf
+          configMap:
+            name: {{ template "appname" .}}-conf
       serviceAccountName: {{ template "appname" .}}
       containers:
       - name: anomaly-operator
@@ -34,6 +38,10 @@ spec:
           limits:
             cpu: 500m
             memory: 1G
+        volumeMounts:
+        - name: {{ template "appname" .}}-conf
+          mountPath: /app/config.yaml
+          subPath: {{ template "appname" .}}-conf.yaml  
         # livenessProbe:
         #   httpGet:
         #     path: /health
