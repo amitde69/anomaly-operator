@@ -10,6 +10,7 @@ import datetime as dt
 import logging
 logging.getLogger("prophet").setLevel(logging.ERROR)
 logging.getLogger("cmdstanpy").disabled = True
+logging.getLogger('matplotlib.font_manager').disabled = True
 
 
 def to_date(epoch_now):
@@ -27,7 +28,10 @@ def detect_cycle(config):
         query_name = item[3]
         df["ds"] = df["ds"].apply(to_date)
 
-        m = Prophet(changepoint_prior_scale=sensitivity,changepoint_range=0.8,interval_width=0.95)
+        m = Prophet(changepoint_prior_scale=sensitivity,changepoint_range=0.8,interval_width=0.95,
+                        weekly_seasonality=True,
+                        daily_seasonality = True,
+                        seasonality_mode='multiplicative')
         try:
             m.fit(df)
             future = m.make_future_dataframe(periods=0) 
@@ -44,12 +48,16 @@ def detect_cycle(config):
 
         # Identify the thresholds with some buffer
         buffer = np.max( forecast_truncated['yhat_upper'])
+        
         expected = forecast_truncated['yhat']
-
+        # expected = expected.apply(lambda x: round(x, 0))
+        expected = expected.astype(int)
+        
         indices =m.history[m.history['y'] > buffer].index
 
         # Get those points that have crossed the threshold
         anomalies  = m.history.iloc[indices] # ------> This has the thresholded values and more important timestamp
+        
         if len(anomalies) != 0:
             logging.warning(f"Found {len(anomalies)} anomalies in {query_name}")
             for index, row in anomalies.iterrows():
