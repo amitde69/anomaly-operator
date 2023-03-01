@@ -12,7 +12,7 @@ with open('config.yaml') as f:
 
 logging.info(f"Got config {config}")
 interval_mins = config['interval_mins']
-interval = interval_mins * 60 * 60
+interval = interval_mins * 60
 while True:
     detect_cycle(config)
     time.sleep(interval)
