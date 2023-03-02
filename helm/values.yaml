@@ -2,18 +2,18 @@ config:
   prom_url: "https://prometheus.frp1.ott.kaltura.com"
   interval_mins: 15
   queries:
-  # - name: "phoenix_avg_cpu"
-  #   query: 'avg(rate(container_cpu_usage_seconds_total{pod=~"kphoenix-.*", container!="POD"}[5m])) / avg(container_spec_cpu_quota{pod=~"kphoenix-.*"} / 100000) * 100'
-  #   detection_window: "12h"
-  #   sensitivity: 100
-  #   resolution: "100"
-  - name: "phoenix_pod_num"
+  - name: "microservice_backend_restarts"
+    query: 'sum(increase(kube_pod_container_status_restarts_total{pod=~"kccproxy-.*|kwsingest-.*|kphoenix-.*|kphoenix-standby-.*|knginx-.*|ingesthandler-.*|transformationhandler-.*|ms-.*"}[5m])) by (container)'
+    detection_window: "12h"
+    sensitivity: 0.9
+    resolution: "100"
+  - name: "microservice_backend_Scale"
     query: 'sum(kube_pod_labels{pod=~"kphoenix-.*"})'
     detection_window: "14d"
     sensitivity: 0.9
     resolution: 1400
-  - name: "sql_a_cpu"
-    query: 'floor(100 - (avg (rate(wmi_cpu_time_total{mode="idle",Type="sql", Name="frp1-sql-b"}[10m])) * 100))'
-    detection_window: "14d"
-    sensitivity: 0.8
-    resolution: 1400
+  # - name: "sql_a_cpu"
+  #   query: 'floor(100 - (avg (rate(wmi_cpu_time_total{mode="idle",Type="sql", Name="frp1-sql-b"}[10m])) * 100))'
+  #   detection_window: "14d"
+  #   sensitivity: 0.8
+  #   resolution: 1400

@@ -42,7 +42,7 @@ def detect_cycle(config):
                 figsize=(10, 6)
                 fig = plt.figure(facecolor='w', figsize=figsize)
                 ax = fig.add_subplot(111)
-                ax.set_title(query_name)
+                ax.set_title(query_name + f"{extra_data}")
                 fig = m.plot(forecast,ax=ax)
                 fig.savefig(f'{query_name}-{i}-forcast.png')
         except Exception as e:
@@ -67,20 +67,20 @@ def detect_cycle(config):
         anomalies  = m.history.iloc[indices] # ------> This has the thresholded values and more important timestamp
 
         if len(anomalies) != 0:
-            logging.warning(f"Found {len(anomalies)} anomalies in {query_name}")
+            logging.warning(f"Found {len(anomalies)} anomalies for {query_name} in {extra_data}")
             for index, row in anomalies.iterrows():
-                logging.warning(f"[{query_name}] time: {row['ds']} expected: {expected[index]} actual: {row['y']}")
+                logging.warning(f"[{query_name}] {extra_data} time: {row['ds']} expected: {expected[index]} actual: {row['y']}")
             if local == 1:
                 fig = None
                 ax = None
                 figsize=(10, 6)
                 fig = plt.figure(facecolor='w', figsize=figsize)
                 ax = fig.add_subplot(111)
-                ax.set_title(query_name)
+                ax.set_title(query_name + f"{extra_data}")
                 fig = m.plot(forecast,ax=ax)
                 ax.plot(anomalies['ds'].dt.to_pydatetime(), anomalies['y'], 'r.',
                         label='Thresholded data points')
                 fig.savefig(f'{query_name}-{i}-anomaly.png')
         else:
-            logging.debug(f"No anomalies found for {query_name}")
+            logging.debug(f"No anomalies found for {query_name} in {extra_data}")
         i+=1
