@@ -36,6 +36,8 @@ def detect_cycle(config):
             m.fit(df)
             future = m.make_future_dataframe(periods=0) 
             forecast = m.predict(future)
+            future = m.make_future_dataframe(periods=0) 
+            forecast = m.predict(future)
             if local == 1:
                 fig = None
                 ax = None

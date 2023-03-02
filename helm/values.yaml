@@ -12,3 +12,8 @@ config:
     detection_window: "14d"
     sensitivity: 0.9
     resolution: 1400
+  - name: "sql_a_cpu"
+    query: 'floor(100 - (avg (rate(wmi_cpu_time_total{mode="idle",Type="sql", Name="frp1-sql-b"}[10m])) * 100))'
+    detection_window: "7d"
+    sensitivity: 0.8
+    resolution: 700
