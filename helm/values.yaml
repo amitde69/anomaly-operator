@@ -3,12 +3,12 @@ config:
   interval_mins: 15
   queries:
   - name: "microservice_backend_restarts"
-    query: 'sum(increase(kube_pod_container_status_restarts_total{pod=~"kccproxy-.*|kwsingest-.*|kphoenix-.*|kphoenix-standby-.*|knginx-.*|ingesthandler-.*|transformationhandler-.*|ms-.*"}[5m])) by (container)'
+    query: 'sum(increase(kube_pod_container_status_restarts_total{pod=~"kccproxy-.*|kwsingest-.*|kphoenix-.*|kphoenix-standby-.*|knginx-.*|ingesthandler-.*|transformationhandler-.*|ms-.*"}[5m])) by (container) > 5'
     detection_window: "12h"
     sensitivity: 0.9
     resolution: "100"
-  - name: "microservice_backend_Scale"
-    query: 'sum(kube_pod_labels{pod=~"kphoenix-.*"})'
+  - name: "microservice_backend_scale"
+    query: 'sum(kube_pod_labels{label_app=~"kccproxy|kwsingest|kphoenix|kphoenix-standby|knginx|ingesthandler|transformationhandler|ms-.*"}) by (label_app) > 10'
     detection_window: "14d"
     sensitivity: 0.9
     resolution: 1400
