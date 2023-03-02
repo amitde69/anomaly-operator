@@ -71,7 +71,7 @@ def detect_cycle(config):
         if len(anomalies) != 0:
             logging.warning(f"Found {len(anomalies)} anomalies in {query_name}")
             for index, row in anomalies.iterrows():
-                logging.warning(f"time: {row['ds']} expected: {expected[index]} actual: {row['y']}")
+                logging.warning(f"[{query_name}] time: {row['ds']} expected: {expected[index]} actual: {row['y']}")
             if local == 1:
                 fig = None
                 ax = None
