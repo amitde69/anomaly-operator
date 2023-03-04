@@ -27,8 +27,17 @@ def preprocess(config, logger):
         start_time = parse_datetime(query["detection_window"])
         end_time = parse_datetime("now")
         prom_expression = query["query"]
-        sensitivity = float(query["sensitivity"])
+
+        flexible = 0.05
+        if "flexible" in query:
+            flexible = float(query["flexible"])
+
         step = int(query["resolution"])
+        
+        buffer_pct = 1
+        if "buffer_pct" in query:
+            buffer_pct = int(query["buffer_pct"]) / 100
+        
         query_name = query["name"]
 
         data = prom.custom_query_range(
@@ -45,6 +54,6 @@ def preprocess(config, logger):
             lst = metric['values']
             extra_data = metric['metric']
             df = pd.DataFrame(lst, columns=columns)
-            metrics.append((df, extra_data, sensitivity, query_name))
+            metrics.append((df, extra_data, flexible, query_name, buffer_pct))
 
     return metrics

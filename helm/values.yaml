@@ -5,15 +5,17 @@ config:
   - name: "microservice_backend_restarts"
     query: 'sum(increase(kube_pod_container_status_restarts_total{pod=~"kccproxy-.*|kwsingest-.*|kphoenix-.*|kphoenix-standby-.*|knginx-.*|ingesthandler-.*|transformationhandler-.*|ms-.*"}[5m])) by (container) > 5'
     detection_window: "14d"
-    sensitivity: 0.9
+    flexible: 0.9
     resolution: 1400
+    buffer_pct: 150
   - name: "microservice_backend_scale"
     query: 'sum(kube_pod_labels{label_app=~"kccproxy|kwsingest|kphoenix|kphoenix-standby|knginx|ingesthandler|transformationhandler|ms-.*"}) by (label_app) > 10'
     detection_window: "14d"
-    sensitivity: 0.9
+    flexible: 0.9
     resolution: 1400
-  # - name: "sql_a_cpu"
-  #   query: 'floor(100 - (avg (rate(wmi_cpu_time_total{mode="idle",Type="sql", Name="frp1-sql-b"}[10m])) * 100))'
-  #   detection_window: "14d"
-  #   sensitivity: 0.8
-  #   resolution: 1400
+    buffer_pct: 150
+  - name: "windows_services_adapters_scale"
+    query: 'sum(wmi_exporter_build_info{Type=~"adapters"}) by (Type)'
+    detection_window: "14d"
+    flexible: 0.9
+    resolution: 1400

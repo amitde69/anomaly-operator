@@ -35,10 +35,14 @@ def detect_cycle(config, logger):
         epoch_now = time.time()
         df = item[0]
         extra_data = item[1]
-        sensitivity = item[2]
+        flexible = item[2]
         query_name = item[3]
+        buffer_pct = item[4]
         df["ds"] = df["ds"].apply(to_date)
-        m = Prophet(changepoint_prior_scale=sensitivity,changepoint_range=0.9,
+        # df['y'] = 5
+        # for timeindex in range(1005, 1007):
+        #     df['y'][timeindex] = 20
+        m = Prophet(changepoint_prior_scale=flexible,changepoint_range=0.8,
                     interval_width=0.95,
                     weekly_seasonality=20,
                     daily_seasonality=20,
@@ -60,7 +64,6 @@ def detect_cycle(config, logger):
                 fig = m.plot(forecast,ax=ax)
                 fig.savefig(f'{query_name}-{i}-forcast.png')
         except Exception as e:
-            print()
             logger.error(f"Failing builiding forcast - {e}")
             continue
 
@@ -69,17 +72,25 @@ def detect_cycle(config, logger):
         forecast_truncated = forecast.loc[forecast_truncated_index]
 
         # Identify the thresholds with some buffer
-        buffer = np.max( forecast_truncated['yhat_upper'] * 1.5)
+        print(buffer_pct)
+        print( np.min( forecast_truncated['yhat_lower']))
+        upper_buffer = np.max( forecast_truncated['yhat_upper']) * buffer_pct
+        lower_buffer = np.min( forecast_truncated['yhat_lower']) / buffer_pct
+        print(lower_buffer)
         
         expected = forecast_truncated['yhat']
         # expected = expected.apply(lambda x: round(x, 0))
+        expected = expected.apply(np.round) 
         expected = expected.astype(int)
+
         
-        indices =m.history[m.history['y'] > buffer].index
+        upper_indices = m.history[m.history['y'] > upper_buffer].index
+        lower_indices = m.history[m.history['y'] < lower_buffer].index
 
         # Get those points that have crossed the threshold
-        anomalies  = m.history.iloc[indices] # ------> This has the thresholded values and more important timestamp
-
+        anomalies = pd.DataFrame()
+        anomalies = anomalies.append(m.history.iloc[upper_indices]) # ------> This has the thresholded values and more important timestamp
+        anomalies = anomalies.append(m.history.iloc[lower_indices]) # ------> This has the thresholded values and more important timestamp
         if len(anomalies) != 0:
             logger.warning(f"Found {len(anomalies)} anomalies for {query_name} in {extra_data}")
             for index, row in anomalies.iterrows():
