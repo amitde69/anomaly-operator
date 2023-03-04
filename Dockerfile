@@ -5,6 +5,7 @@ COPY req.txt .
 RUN apt-get -y install libc-dev
 RUN pip install -r req.txt
 COPY preprocess.py .
+COPY logger.py .
 COPY train.py .
 COPY main.py .
 CMD python main.py
