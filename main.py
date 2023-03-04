@@ -1,18 +1,26 @@
 from train import detect_cycle
 import yaml, os, time
 from yaml.loader import SafeLoader
-import logging
+import logger as logging
+from prometheus_client import start_http_server
+import prometheus_client
+prometheus_client.REGISTRY.unregister(prometheus_client.GC_COLLECTOR)
+prometheus_client.REGISTRY.unregister(prometheus_client.PLATFORM_COLLECTOR)
+prometheus_client.REGISTRY.unregister(prometheus_client.PROCESS_COLLECTOR)
 
-log_level = os.getenv("LOG_LEVEL", "ERROR")
-logging.basicConfig(format='[%(asctime)s] %(levelname)s %(message)s', level=log_level)
+# log_level = os.getenv("LOG_LEVEL", "ERROR")
+# logging.basicConfig(format='[%(asctime)s] %(levelname)s %(message)s', level=log_level)
+
+
 # Open the file and load the file
 config = None
 with open('config.yaml') as f:
     config = yaml.load(f, Loader=SafeLoader)
-
-logging.info(f"Got config {config}")
+logger = logging.load()
+logger.info(f"Got config {config}")
+start_http_server(9090)
 interval_mins = config['interval_mins']
 interval = interval_mins * 60
 while True:
-    detect_cycle(config)
+    detect_cycle(config, logger)
     time.sleep(interval)

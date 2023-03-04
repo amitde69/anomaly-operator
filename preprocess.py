@@ -5,12 +5,19 @@ import matplotlib.pyplot as plt
 import warnings
 import logging
 warnings.simplefilter(action='ignore', category=FutureWarning)
+# from pythonjsonlogger import jsonlogger
+# logger = logging.getLogger()
+
+# logHandler = logging.StreamHandler()
+# formatter = jsonlogger.JsonFormatter()
+# logHandler.setFormatter(formatter)
+# logger.addHandler(logHandler)
 
 from prometheus_api_client import PrometheusConnect
 from prometheus_api_client.utils import parse_datetime
 from datetime import timedelta
 
-def preprocess(config):
+def preprocess(config, logger):
     prom_url = config["prom_url"]
     prom = PrometheusConnect(url = prom_url)
     queries = config["queries"]
@@ -33,7 +40,7 @@ def preprocess(config):
 
         columns = ['ds', 'y']
         if len(data) == 0:
-            logging.error(f"query {prom_expression} returned 0 results")
+            logger.error(f"query {prom_expression} returned 0 results")
         for metric in data: 
             lst = metric['values']
             extra_data = metric['metric']
