@@ -62,9 +62,9 @@ def detect_cycle(config, logger):
 
             # get the timestamp of x hours ago
             x_hours_ago = datetime.utcnow() - timedelta(hours=1)
-            last_hours_data = future[future['Date'] >= x_hours_ago]
-            last_hours_data_y = model_history[model_history['Date'] >= x_hours_ago]
-            forecast = m.predict(last_hours_data)
+            last_hour_data = future[future['Date'] >= x_hours_ago]
+            last_hour_data_y = model_history[model_history['Date'] >= x_hours_ago]
+            forecast = m.predict(last_hour_data)
             # print(model_history)
             # print(future)
             # print(forecast)
@@ -98,9 +98,9 @@ def detect_cycle(config, logger):
         # expected = expected.apply(lambda x: round(x, 0))
         expected = expected.apply(np.round) 
         expected = expected.astype(int)
-        upper_indices = last_hours_data_y[last_hours_data_y['y'] > upper_buffer].index
-        lower_indices = last_hours_data_y[last_hours_data_y['y'] < lower_buffer].index
-        # print(last_hours_data_y.iloc[upper_indices])
+        upper_indices = last_hour_data_y[last_hour_data_y['y'] > upper_buffer].index
+        lower_indices = last_hour_data_y[last_hour_data_y['y'] < lower_buffer].index
+        # print(last_hour_data_y.iloc[upper_indices])
 
         # Get those points that have crossed the threshold
         anomalies = pd.DataFrame()
