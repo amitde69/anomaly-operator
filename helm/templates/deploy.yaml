@@ -26,7 +26,7 @@ spec:
       serviceAccountName: {{ template "appname" .}}
       containers:
       - name: anomaly-operator
-        image: {{ .Values.global.account }}.dkr.ecr.{{ .Values.global.region }}.amazonaws.com/{{ (.Values.anomaly_operator).image | default "master/anomaly-operator:0.0.1" }}
+        image: {{ .Values.global.account }}.dkr.ecr.{{ .Values.global.region }}.amazonaws.com/{{ (.Values.anomaly_operator).image | default "master/anomaly-operator:0.0.2" }}
         imagePullPolicy: Always
         ports:
         - containerPort: 80
