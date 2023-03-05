@@ -15,7 +15,7 @@ warnings.simplefilter(action='ignore', category=FutureWarning)
 
 from prometheus_api_client import PrometheusConnect
 from prometheus_api_client.utils import parse_datetime
-from datetime import timedelta
+from datetime import timedelta, datetime
 
 def preprocess(config, logger):
     prom_url = config["prom_url"]
@@ -28,7 +28,6 @@ def preprocess(config, logger):
         start_time = parse_datetime(query["train_window"])
         end_time = parse_datetime("now")
         prom_expression = query["query"]
-        # print(parse_datetime("2d"))
 
         flexibility = 0.05
         if "flexibility" in query:
@@ -38,7 +37,11 @@ def preprocess(config, logger):
         if "detection_window_hours" in query:
             detection_window_hours = int(query["detection_window_hours"])
 
-        step = int(query["resolution"])
+        diff = end_time - start_time
+        diff_in_hours = diff.total_seconds() / 3600
+        resolution = diff_in_hours
+        if "resolution" in query:
+            step = int(query["resolution"])
         
         buffer_pct = 1
         if "buffer_pct" in query:
