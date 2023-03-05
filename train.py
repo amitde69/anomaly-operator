@@ -7,6 +7,7 @@ from matplotlib import pyplot as plt
 from preprocess import preprocess
 import time, os
 import datetime as dt
+from datetime import timedelta, datetime, timezone
 import logging
 from prometheus_client import Counter, Gauge
 
@@ -28,21 +29,23 @@ def to_date(epoch_now):
 
 def detect_cycle(config, logger):
     local = int(os.getenv("LOCAL", "0"))
-    metrics = preprocess(config, logger)
+    train_metrics = preprocess(config, logger)
     anoamly_counter = 0
     i = 0
-    for item in metrics:
+    for item in train_metrics:
         epoch_now = time.time()
         df = item[0]
         extra_data = item[1]
-        flexible = item[2]
+        flexibility = item[2]
         query_name = item[3]
         buffer_pct = item[4]
+        detection_window_hours = item[5]
         df["ds"] = df["ds"].apply(to_date)
         # df['y'] = 5
-        # for timeindex in range(1005, 1007):
-        #     df['y'][timeindex] = 20
-        m = Prophet(changepoint_prior_scale=flexible,changepoint_range=0.8,
+        # print(df)
+        # for timeindex in range(2990, 3000):
+        #     df['y'][timeindex] = 4
+        m = Prophet(changepoint_prior_scale=flexibility,changepoint_range=0.8,
                     interval_width=0.95,
                     weekly_seasonality=20,
                     daily_seasonality=20,
@@ -53,7 +56,18 @@ def detect_cycle(config, logger):
                 continue
             m.fit(df)
             future = m.make_future_dataframe(periods=0) 
-            forecast = m.predict(future)
+            future['Date'] = pd.to_datetime(future.ds)
+            model_history = m.history
+            model_history['Date'] = pd.to_datetime(model_history.ds)
+
+            # get the timestamp of x hours ago
+            x_hours_ago = datetime.utcnow() - timedelta(hours=1)
+            last_hours_data = future[future['Date'] >= x_hours_ago]
+            last_hours_data_y = model_history[model_history['Date'] >= x_hours_ago]
+            forecast = m.predict(last_hours_data)
+            # print(model_history)
+            # print(future)
+            # print(forecast)
             if local == 1:
                 fig = None
                 ax = None
@@ -68,34 +82,36 @@ def detect_cycle(config, logger):
             continue
 
         # find the dataframes having same indices
-        forecast_truncated_index =forecast.index.intersection(df.index)
+        forecast_truncated_index = forecast.index.intersection(df.index)
         forecast_truncated = forecast.loc[forecast_truncated_index]
 
         # Identify the thresholds with some buffer
-        print(buffer_pct)
-        print( np.min( forecast_truncated['yhat_lower']))
         upper_buffer = np.max( forecast_truncated['yhat_upper']) * buffer_pct
         lower_buffer = np.min( forecast_truncated['yhat_lower']) / buffer_pct
-        print(lower_buffer)
         
-        expected = forecast_truncated['yhat']
+        forecast_truncated_last = forecast_truncated
+        forecast_truncated_last["Date"] = pd.to_datetime(forecast_truncated.ds)
+        forecast_truncated_last = forecast_truncated_last[forecast_truncated_last['Date'] >= x_hours_ago]
+
+        expected = forecast_truncated_last['yhat']
+        
         # expected = expected.apply(lambda x: round(x, 0))
         expected = expected.apply(np.round) 
         expected = expected.astype(int)
-
-        
-        upper_indices = m.history[m.history['y'] > upper_buffer].index
-        lower_indices = m.history[m.history['y'] < lower_buffer].index
+        upper_indices = last_hours_data_y[last_hours_data_y['y'] > upper_buffer].index
+        lower_indices = last_hours_data_y[last_hours_data_y['y'] < lower_buffer].index
+        # print(last_hours_data_y.iloc[upper_indices])
 
         # Get those points that have crossed the threshold
         anomalies = pd.DataFrame()
-        anomalies = anomalies.append(m.history.iloc[upper_indices]) # ------> This has the thresholded values and more important timestamp
-        anomalies = anomalies.append(m.history.iloc[lower_indices]) # ------> This has the thresholded values and more important timestamp
+        anomalies = anomalies.append(model_history.iloc[upper_indices]) # ------> This has the thresholded values and more important timestamp
+        anomalies = anomalies.append(model_history.iloc[lower_indices]) # ------> This has the thresholded values and more important timestamp
+        
         if len(anomalies) != 0:
             logger.warning(f"Found {len(anomalies)} anomalies for {query_name} in {extra_data}")
             for index, row in anomalies.iterrows():
                 anoamly_counter+=1
-                logger.warning(f"[{query_name}] {extra_data} time: {row['ds']} expected: {expected[index]} actual: {row['y']}")
+                logger.warning(f"[{query_name}] {extra_data} time: {row['ds']} actual: {row['y']}")
             if local == 1:
                 fig = None
                 ax = None

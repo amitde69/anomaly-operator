@@ -21,16 +21,22 @@ def preprocess(config, logger):
     prom_url = config["prom_url"]
     prom = PrometheusConnect(url = prom_url)
     queries = config["queries"]
-    metrics = []
+    train_metrics = []
+    predict_metrics = []
     for query in queries:
         ## set configs
-        start_time = parse_datetime(query["detection_window"])
+        start_time = parse_datetime(query["train_window"])
         end_time = parse_datetime("now")
         prom_expression = query["query"]
+        # print(parse_datetime("2d"))
 
-        flexible = 0.05
-        if "flexible" in query:
-            flexible = float(query["flexible"])
+        flexibility = 0.05
+        if "flexibility" in query:
+            flexibility = float(query["flexibility"])
+
+        detection_window_hours = 1
+        if "detection_window_hours" in query:
+            detection_window_hours = int(query["detection_window_hours"])
 
         step = int(query["resolution"])
         
@@ -40,7 +46,7 @@ def preprocess(config, logger):
         
         query_name = query["name"]
 
-        data = prom.custom_query_range(
+        train_data = prom.custom_query_range(
             prom_expression,  # this is the metric name and label config
             start_time=start_time,
             end_time=end_time,
@@ -48,12 +54,12 @@ def preprocess(config, logger):
         )
 
         columns = ['ds', 'y']
-        if len(data) == 0:
+        if len(train_data) == 0:
             logger.error(f"query {prom_expression} returned 0 results")
-        for metric in data: 
+        for metric in train_data: 
             lst = metric['values']
             extra_data = metric['metric']
             df = pd.DataFrame(lst, columns=columns)
-            metrics.append((df, extra_data, flexible, query_name, buffer_pct))
+            train_metrics.append((df, extra_data, flexibility, query_name, buffer_pct, detection_window_hours))
 
-    return metrics
+    return train_metrics
