@@ -3,7 +3,6 @@ import pandas as pd
 from prophet import Prophet
 from prophet.plot import add_changepoints_to_plot
 import numpy as np
-from matplotlib import pyplot as plt
 from preprocess import preprocess
 import time, os
 import datetime as dt
@@ -72,6 +71,7 @@ def detect_cycle(config, logger):
             # print(future)
             # print(forecast)
             if local == 1:
+                from matplotlib import pyplot as plt
                 fig = None
                 ax = None
                 figsize=(10, 6)

@@ -1,5 +1,4 @@
 cmdstanpy
-matplotlib
 numpy
 pandas
 plotly==5.13.0
