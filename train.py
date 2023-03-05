@@ -43,46 +43,46 @@ def detect_cycle(config, logger):
         df["ds"] = df["ds"].apply(to_date)
         # df['y'] = 5
         # print(df)
-        # for timeindex in range(2990, 3000):
-        #     df['y'][timeindex] = 4
+        # for timeindex in range(54, 59):
+        #     df['y'][timeindex] = 70
         m = Prophet(changepoint_prior_scale=flexibility,changepoint_range=0.8,
                     interval_width=0.95,
                     weekly_seasonality=20,
                     daily_seasonality=20,
                     seasonality_mode='multiplicative')
-        # try:
-        if len(df) < 2:
-            logger.info("query returned less then 2 results. skipiing.")
-            continue
-        m.fit(df)
-        future = m.make_future_dataframe(periods=0) 
-        future['Date'] = pd.to_datetime(future.ds)
-        model_history = m.history
-        model_history['Date'] = pd.to_datetime(model_history.ds)
+        try:
+            if len(df) < 2:
+                logger.info("query returned less then 2 results. skipiing.")
+                continue
+            m.fit(df)
+            future = m.make_future_dataframe(periods=0) 
+            future['Date'] = pd.to_datetime(future.ds)
+            model_history = m.history
+            model_history['Date'] = pd.to_datetime(model_history.ds)
 
-        # get the timestamp of x hours ago
-        x_hours_ago = datetime.utcnow() - timedelta(hours=1)
-        last_hours_data = future[future['Date'] >= x_hours_ago]
-        last_hours_data_y = model_history[model_history['Date'] >= x_hours_ago]
-        if len(last_hours_data) < 1:
-            logger.info(f"last {x_hours_ago} data is empty. skipiing.")
+            # get the timestamp of x hours ago
+            x_hours_ago = datetime.utcnow() - timedelta(hours=detection_window_hours)
+            last_hours_data = future[future['Date'] >= x_hours_ago]
+            last_hours_data_y = model_history[model_history['Date'] >= x_hours_ago]
+            if len(last_hours_data) < 1:
+                logger.info(f"last {detection_window_hours} hours data is empty. skipiing.")
+                continue
+            forecast = m.predict(last_hours_data)
+            # print(model_history)
+            # print(future)
+            # print(forecast)
+            if local == 1:
+                fig = None
+                ax = None
+                figsize=(10, 6)
+                fig = plt.figure(facecolor='w', figsize=figsize)
+                ax = fig.add_subplot(111)
+                ax.set_title(query_name + f"{extra_data}")
+                fig = m.plot(forecast,ax=ax)
+                fig.savefig(f'{query_name}-{i}-forcast.png')
+        except Exception as e:
+            logger.error(f"Failing builiding forcast - {e}")
             continue
-        forecast = m.predict(last_hours_data)
-        # print(model_history)
-        # print(future)
-        # print(forecast)
-        if local == 1:
-            fig = None
-            ax = None
-            figsize=(10, 6)
-            fig = plt.figure(facecolor='w', figsize=figsize)
-            ax = fig.add_subplot(111)
-            ax.set_title(query_name + f"{extra_data}")
-            fig = m.plot(forecast,ax=ax)
-            fig.savefig(f'{query_name}-{i}-forcast.png')
-        # except Exception as e:
-        #     logger.error(f"Failing builiding forcast - {e}")
-        #     continue
 
         # find the dataframes having same indices
         forecast_truncated_index = forecast.index.intersection(df.index)

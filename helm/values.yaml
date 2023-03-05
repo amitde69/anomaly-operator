@@ -19,3 +19,8 @@ config:
     train_window: "14d"
     flexibility: 0.9
     resolution: 1400
+  - name: "windows_services_adapters_cpu"
+    query: 'floor(100 - (avg by(Type) (irate(wmi_cpu_time_total{mode="idle",Type=~"adapters|imageserver|harvester|dms|api|remotetasks|tvm"}[5m])) * 100)) > 5'
+    train_window: "14d"
+    flexibility: 0.9
+    buffer_pct: 120

@@ -39,7 +39,7 @@ def preprocess(config, logger):
 
         diff = end_time - start_time
         diff_in_hours = diff.total_seconds() / 3600
-        resolution = diff_in_hours
+        step = diff_in_hours
         if "resolution" in query:
             step = int(query["resolution"])
         
