@@ -1,0 +1,33 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  creationTimestamp: null
+  name: {{ template "appname" .}}-role
+rules:
+- apiGroups:
+  - monitoring.amitdebachar
+  resources:
+  - detectors
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - monitoring.amitdebachar
+  resources:
+  - detectors/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - monitoring.amitdebachar
+  resources:
+  - detectors/status
+  verbs:
+  - get
+  - patch
+  - update

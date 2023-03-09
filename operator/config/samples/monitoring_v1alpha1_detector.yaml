@@ -1,0 +1,135 @@
+apiVersion: monitoring.amitdebachar/v1alpha1
+kind: Detector
+metadata:
+  labels:
+    app.kubernetes.io/name: detector
+    app.kubernetes.io/instance: detector-sample
+    app.kubernetes.io/part-of: operator
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: operator
+  name: detector-sample
+spec:
+  image: "870777418594.dkr.ecr.us-west-2.amazonaws.com/master/anomaly-operator:0.0.2"
+  prom_url: "https://prometheus.frp1.ott.kaltura.com"
+  interval_mins: "0.001"
+  # pod_spec:
+  #   metadata:
+  #     labels:
+  #       allow_db: "true"
+  #       app: ms-phoenix-api-grpc
+  #       gitsha: initial
+  #       pdb: "true"
+  #       pod_type: ms
+  #     name: test
+  #     namespace: default
+  #   spec:
+  #     containers:
+  #     - env:
+  #       - name: MONGO_DB_CONFIGURATION__USERNAME
+  #         valueFrom:
+  #           secretKeyRef:
+  #             key: MONGODB_USERNAME
+  #             name: mongodb-sealed-user
+  #       - name: MONGO_DB_CONFIGURATION__PASSWORD
+  #         valueFrom:
+  #           secretKeyRef:
+  #             key: MONGODB_PASSWORD
+  #             name: mongodb-sealed-user
+  #       - name: MONGO_DB_CONFIGURATION__HOSTNAME
+  #         value: mongodb
+  #       - name: MONGO_DB_CONFIGURATION__PORT
+  #         value: "27017"
+  #       - name: MONGO_DB_CONFIGURATION__REPLICASETNAME
+  #         value: rs0
+  #       - name: COMPlus_gcServer
+  #         value: "1"
+  #       - name: COMPlus_gcConcurrent
+  #         value: "1"
+  #       - name: CONCURRENCY_LIMITER_MAX_LENGTH
+  #         value: "10000"
+  #       - name: CONCURRENCY_LIMITER_MAX_CONCURRENT
+  #         value: "32"
+  #       - name: MIN_WORKER_THREADS
+  #         value: "1000"
+  #       - name: MIN_IO_WORKER_THREADS
+  #         value: "500"
+  #       - name: GRPC_VERBOSITY
+  #         value: DEBUG
+  #       - name: TCM_URL
+  #         value: http://ktcm
+  #       - name: TCM_APP
+  #         value: OTT_API_VEON
+  #       - name: TCM_SECTION
+  #         value: main
+  #       - name: TCM_HOST
+  #         value: MS
+  #       - name: OTT_GRPC_SERVER_PORT
+  #         value: "9090"
+  #       - name: OTT_GRPC_SERVER_KEY_FILE
+  #         value: ./ssl/ssl.key
+  #       - name: OTT_GRPC_SERVER_CERT_FILE
+  #         value: ./ssl/ssl.crt
+  #       - name: OTT_GRPC_SERVER_INSECURE_PORT
+  #         value: "9091"
+  #       - name: OTT_GRPC_SERVER_ALLOW_INSECURE
+  #         value: "true"
+  #       - name: MICROSERVICES_CLIENT_CONFIGURATION__SEGMENTATION__ADDRESS
+  #         value: ms-segmentation-api-grpc.default.svc.cluster.local:9091
+  #       - name: MICROSERVICES_CLIENT_CONFIGURATION__SEGMENTATION__CERT_FILE_PATH
+  #         value: ' '
+  #       envFrom:
+  #       - configMapRef:
+  #           name: ms-phoenix-api-grpc-env
+  #       image: 870777418594.dkr.ecr.us-west-2.amazonaws.com/master/ott-service-phoenix-api-grpc:8.5-01.0
+  #       imagePullPolicy: Always
+  #       lifecycle:
+  #         preStop:
+  #           exec:
+  #             command:
+  #             - /bin/sh
+  #             - -c
+  #             - sleep 30
+  #       livenessProbe:
+  #         exec:
+  #           command:
+  #           - ./grpc_health_probe
+  #           - -addr=localhost:9091
+  #         failureThreshold: 3
+  #         periodSeconds: 10
+  #         successThreshold: 1
+  #         timeoutSeconds: 1
+  #       name: ms-phoenix-api-grpc
+  #       ports:
+  #       - containerPort: 8080
+  #         name: http
+  #         protocol: TCP
+  #       - containerPort: 9090
+  #         name: grpc
+  #         protocol: TCP
+  #       - containerPort: 9091
+  #         name: grpc-insecure
+  #         protocol: TCP
+  #       readinessProbe:
+  #         exec:
+  #           command:
+  #           - ./grpc_health_probe
+  #           - -addr=localhost:9091
+  #         failureThreshold: 3
+  #         initialDelaySeconds: 5
+  #         periodSeconds: 10
+  #         successThreshold: 1
+  #         timeoutSeconds: 1
+  #       resources:
+  #         limits:
+  #           cpu: 1500m
+  #           memory: 2G
+  #         requests:
+  #           cpu: 1500m
+  #           memory: 2G
+  queries:
+  - name: "microservice_backend_scale"
+    query: 'sum(kube_pod_labels{label_app=~"kccproxy|kwsingest|kphoenix|kphoenix-standby|knginx|ingesthandler|transformationhandler|ms-.*"}) by (label_app) >= 10'
+    train_window: "1d"
+    flexibility: "5"
+    resolution: 200
+    buffer_pct: 150

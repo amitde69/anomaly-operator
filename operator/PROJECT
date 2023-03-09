@@ -1,0 +1,19 @@
+domain: amitdebachar
+layout:
+- go.kubebuilder.io/v4-alpha
+plugins:
+  manifests.sdk.operatorframework.io/v2: {}
+  scorecard.sdk.operatorframework.io/v2: {}
+projectName: operator
+repo: github.com/amitde69/anomaly-operator
+resources:
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: amitdebachar
+  group: monitoring
+  kind: Detector
+  path: github.com/amitde69/anomaly-operator/api/v1alpha1
+  version: v1alpha1
+version: "3"
