@@ -191,6 +191,7 @@ func (r *DetectorReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 				return ctrl.Result{Requeue: true}, nil
 			}
 		} else {
+			deployment.Spec.Template.Annotations = deployment_exist.Spec.Template.Annotations 
 			if !reflect.DeepEqual(deployment.Spec , deployment_exist.Spec) {
 				// Update the Deployment
 				deployment_exist.Spec.Template = deployment.Spec.Template
@@ -310,7 +311,7 @@ func (r *DetectorReconciler) createFinalizerCallback(ctx context.Context, detect
 			// fmt.Printf("Detected a new resource, creating a finalizer for it")
 			detector.SetFinalizers(finalizers)
 			if err := r.Update(ctx, detector); err != nil {
-				return fmt.Errorf("error occurred while setting the finalizers of the detector resource", err)
+				return fmt.Errorf("error occurred while setting the finalizers of the detector resource: %w", err)
 			}
 		}
 	}
