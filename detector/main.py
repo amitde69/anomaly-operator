@@ -14,13 +14,16 @@ prometheus_client.REGISTRY.unregister(prometheus_client.PROCESS_COLLECTOR)
 
 # Open the file and load the file
 config = None
+prometheus_port = 9090
 with open('config.yaml') as f:
     config = yaml.load(f, Loader=SafeLoader)
 logger = logging.load()
 logger.info(f"Got config {config}")
-start_http_server(9090)
+logger.info(f"Starting prometheus endpoint at /metrics on port {prometheus_port}...")
+start_http_server()
 interval_mins = config['interval_mins']
 interval = interval_mins * 60
+logger.info(f"Starting detector loop...")
 while True:
     detect_cycle(config, logger)
     time.sleep(interval)
