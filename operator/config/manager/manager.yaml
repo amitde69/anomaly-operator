@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: controller-manager
-  namespace: {{ .Release.Namespace }}
+  namespace: default
   labels:
     control-plane: controller-manager
     app.kubernetes.io/name: deployment
@@ -87,5 +87,3 @@ spec:
             memory: 64Mi
       serviceAccountName: controller-manager
       terminationGracePeriodSeconds: 10
-      imagePullSecrets:
-      - name: us-west-2-ecr-registry
