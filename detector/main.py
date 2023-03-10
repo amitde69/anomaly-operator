@@ -20,7 +20,7 @@ with open('config.yaml') as f:
 logger = logging.load()
 logger.info(f"Got config {config}")
 logger.info(f"Starting prometheus endpoint at /metrics on port {prometheus_port}...")
-start_http_server()
+start_http_server(prometheus_port)
 interval_mins = config['interval_mins']
 interval = interval_mins * 60
 logger.info(f"Starting detector loop...")

@@ -358,17 +358,17 @@ func (r *DetectorReconciler) newDeployment(cr *monitoringv1alpha1.Detector) *app
 										},
 									},
 									Ports: []corev1.ContainerPort{{
-										ContainerPort: 8080,
+										ContainerPort: 9090,
 										Name: "http",
 									}},
 									Resources: corev1.ResourceRequirements{
 										Requests: corev1.ResourceList{
-											"cpu":    resourceQuantity("500m"),
-											"memory": resourceQuantity("100M"),
+											"cpu":    resourceQuantity("300m"),
+											"memory": resourceQuantity("500M"),
 										},
 										Limits: corev1.ResourceList{
-											"cpu":    resourceQuantity("500m"),
-											"memory": resourceQuantity("100M"),
+											"cpu":    resourceQuantity("300m"),
+											"memory": resourceQuantity("500M"),
 										},
 									},
 									VolumeMounts: []corev1.VolumeMount{
