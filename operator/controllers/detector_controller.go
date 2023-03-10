@@ -163,6 +163,29 @@ func (r *DetectorReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 
 	if detector.GetDeletionTimestamp().IsZero() {
 
+		serviceaccount := r.newServiceAccount(detector)
+		serviceaccount_exist := serviceaccount.DeepCopy()
+		err = r.Get(ctx, req.NamespacedName, serviceaccount_exist)
+		if err != nil {
+			if errors.IsNotFound(err) {
+				// create a new serviceaccount
+				logger.Info("Creating new serviceaccount following new detector resource")
+				if err = r.Create(ctx, serviceaccount); err != nil {
+					return ctrl.Result{}, err
+				}
+				return ctrl.Result{Requeue: true}, nil
+			}
+		} else {
+			if !reflect.DeepEqual(serviceaccount , serviceaccount_exist) {
+				// Update the Deployment
+				serviceaccount_exist = serviceaccount
+				err = r.Update(ctx, serviceaccount_exist)
+				if err != nil {
+					return ctrl.Result{}, err
+				}
+			}
+		}
+		
 		deployment := r.newDeployment(detector)
 		deployment_exist := deployment.DeepCopy()
 		
@@ -236,29 +259,6 @@ func (r *DetectorReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 			}
 		}
 		
-
-		serviceaccount := r.newServiceAccount(detector)
-		serviceaccount_exist := serviceaccount.DeepCopy()
-		err = r.Get(ctx, req.NamespacedName, serviceaccount_exist)
-		if err != nil {
-			if errors.IsNotFound(err) {
-				// create a new serviceaccount
-				logger.Info("Creating new serviceaccount following new detector resource")
-				if err = r.Create(ctx, serviceaccount); err != nil {
-					return ctrl.Result{}, err
-				}
-				return ctrl.Result{Requeue: true}, nil
-			}
-		} else {
-			if !reflect.DeepEqual(serviceaccount , serviceaccount_exist) {
-				// Update the Deployment
-				serviceaccount_exist = serviceaccount
-				err = r.Update(ctx, serviceaccount_exist)
-				if err != nil {
-					return ctrl.Result{}, err
-				}
-			}
-		}
 		
 		// // Update the Memcached status with the pod names.
 		// // List the pods for this CR's deployment.
