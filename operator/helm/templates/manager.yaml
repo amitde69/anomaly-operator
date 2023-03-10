@@ -58,7 +58,7 @@ spec:
         args:
         - --leader-elect
         image: 870777418594.dkr.ecr.us-west-2.amazonaws.com/master/anomaly-operator:0.0.4-operator
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         name: manager
         securityContext:
           allowPrivilegeEscalation: false
