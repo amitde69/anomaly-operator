@@ -175,17 +175,8 @@ func (r *DetectorReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 				}
 				return ctrl.Result{Requeue: true}, nil
 			}
-		} else {
-			if !reflect.DeepEqual(serviceaccount , serviceaccount_exist) {
-				// Update the Deployment
-				serviceaccount_exist = serviceaccount
-				err = r.Update(ctx, serviceaccount_exist)
-				if err != nil {
-					return ctrl.Result{}, err
-				}
-			}
 		}
-		
+
 		deployment := r.newDeployment(detector)
 		deployment_exist := deployment.DeepCopy()
 		

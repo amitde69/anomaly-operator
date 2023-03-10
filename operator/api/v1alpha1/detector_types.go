@@ -44,9 +44,9 @@ type QuerySpec struct {
 	// Foo is an example field of Detector. Edit detector_types.go to remove/update
 	Name        string `json:"name,omitempty"`
 	Query       string `json:"query,omitempty"`
-	TrainWindow string `json:"train_window,omitempty"`
+	Train_Window string `json:"train_window,omitempty"`
 	Flexibility string `json:"flexibility,omitempty"`
-	BufferPct   int64  `json:"buffer_pct,omitempty"`
+	Buffer_Pct   int64  `json:"buffer_pct,omitempty"`
 	Resolution  int64  `json:"resolution,omitempty"`
 }
 
