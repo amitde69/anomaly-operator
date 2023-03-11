@@ -47,13 +47,15 @@ def preprocess(config, logger):
             buffer_pct = int(query["buffer_pct"]) / 100
         
         query_name = query["name"]
-
-        train_data = prom.custom_query_range(
-            prom_expression,  # this is the metric name and label config
-            start_time=start_time,
-            end_time=end_time,
-            step=step,
-        )
+        try:
+            train_data = prom.custom_query_range(
+                prom_expression,  # this is the metric name and label config
+                start_time=start_time,
+                end_time=end_time,
+                step=step,
+            )
+        except Exception as e:
+            logger.error(f"Failed while querying {query_name}: {e}")
 
         columns = ['ds', 'y']
         if len(train_data) == 0:
