@@ -189,20 +189,6 @@ func (r *DetectorReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 			}
 		}
 		
-		
-		// // Update the Memcached status with the pod names.
-		// // List the pods for this CR's deployment.
-		// podList := &corev1.PodList{}
-		// listOpts := []client.ListOption{
-		// 	client.InNamespace(detector.Namespace),
-		// 	client.MatchingLabels(map[string]string{
-		// 		"app": detector.Name,
-		// 		"tier": "mysql",
-		// 		}),
-		// }
-		// if err = r.List(ctx, podList, listOpts...); err != nil {
-		// 	return ctrl.Result{}, err
-		// }
 
 	} 
 	
