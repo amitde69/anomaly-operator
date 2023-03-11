@@ -1,4 +1,4 @@
-# Migrate from v1 to v2
+<!-- # Migrate from v1 to v2
 This document contains the information necessary to migrate from an existing installation of AWSALBIngressController(v1) to the new AWSLoadBalancerController(v2).
 
 ## Prerequisites
@@ -68,4 +68,4 @@ foo@bar:~$ kubectl describe deployment  -n kube-system  alb-ingress-controller |
     1. Install AWSLoadBalancerController(v2.4.1) by following the [installation instructions](../operator_deployment.md)
     2. Grant [additional IAM policy](../../install/iam_policy_v1_to_v2_additional.json) needed for migration to the controller.
 
-4. Verify all Ingresses works as expected.
+4. Verify all Ingresses works as expected. -->

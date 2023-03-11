@@ -1,6 +1,68 @@
 # K8S Anomaly Detection Operator Deployment
 ## Deploy Helm Chart
 
-The operator helm chart can be simply cloned and deployed from this directory https://github.com/amitde69/anomaly-operator/tree/main/helm.
+The operator helm chart can be simply cloned and deployed from this directory 
+<a ref="https://github.com/amitde69/anomaly-operator/tree/main/helm">https://github.com/amitde69/anomaly-operator/tree/main/helm<a/>.
 
-The IAM permissions can either be setup via [IAM roles for ServiceAccount (IRSA)](https://docs.aws.amazon.com/emr/latest/EMR-on-EKS-DevelopmentGuide/setting-up-enable-IAM.html) or can be attached directly to the worker node IAM roles. If you are using kops or vanilla k8s, polices must be manually attached to node instances.
+
+## Deploy Operator to Cluster
+
+We recommend using the Helm chart.
+
+=== "Via Helm"
+
+    1. Clone the Operator repo
+    ```
+    git clone https://github.com/amitde69/anomaly-operator
+    ```
+    2. Install the chart via `helm install`.
+    ```
+    helm install anomaly-operator helm/
+    ```
+
+        !!!tip
+            The `helm install` command automatically applies the CRDs.
+
+
+    Helm install command to override image repo and tag : 
+    ```
+    helm install anomaly-operator helm \
+        --set repo="xxx/anomaly-operator" \
+        --set tag="xxx-operator"
+    ```
+
+    Helm install command to override namespace : 
+    ```
+    helm install anomaly-operator helm -n custom-namespace
+    ```
+
+=== "Via YAML manifests"
+    ### Template The Helm Chart
+
+    ```
+    helm template helm > deploy.yaml
+    ```
+
+    Helm template command to override image repo and tag : 
+    ```
+    helm template helm \
+        --set repo="xxx/anomaly-operator" \
+        --set tag="xxx-operator" > deploy.yaml
+    ```
+
+    Helm template command to override namespace : 
+    ```
+    helm install helm -n custom-namespace > deploy.yaml
+    ```
+
+
+    ### Apply YAML
+    
+    Apply the deploy.yaml
+    ```
+    kubectl apply -f deploy.yaml
+    ```
+## Upgrade The Operator
+
+The operator doesn't receive security updates automatically. You need to manually upgrade to a newer version when it becomes available.
+

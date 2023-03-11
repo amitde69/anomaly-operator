@@ -57,7 +57,7 @@ spec:
         - /manager
         args:
         - --leader-elect
-        image: 870777418594.dkr.ecr.us-west-2.amazonaws.com/master/anomaly-operator:0.0.4-operator
+        image: {{ .Values.repo }}:{{ .Values.tag }}
         imagePullPolicy: Always
         name: manager
         securityContext:

@@ -1,8 +1,9 @@
 site_name: K8S Anomaly Detection Operator
-repo_name: kubernetes-sigs/aws-load-balancer-controller
-repo_url: https://github.com/kubernetes-sigs/aws-load-balancer-controller
+repo_name: amitde69/anomaly-operator
+repo_url: https://github.com/amitde69/anomaly-operator
 edit_uri: edit/main/docs/
 strict: true
+# dev_addr: 10.0.0.14:8080
 
 nav:
   - Home:
@@ -11,28 +12,9 @@ nav:
     - Operator Deployment: getting_started/operator_deployment.md
     - Detector CRD:
       - Configuration: getting_started/configurations.md
-    - Logs: getting_started/upgrade/migrate_v1_v2.md
-    - Metrics: getting_started/upgrade/migrate_v1_v2.md
-  # - Guide:
-  #     - Ingress:
-  #         - Annotations: guide/ingress/annotations.md
-  #         - Specification: guide/ingress/spec.md
-  #         - IngressClass: guide/ingress/ingress_class.md
-  #         - Certificate Discovery: guide/ingress/cert_discovery.md
-  #     - Service:
-  #         - Network Load Balancer: guide/service/nlb.md
-  #         - Annotations: guide/service/annotations.md
-  #     - TargetGroupBinding:
-  #         - TargetGroupBinding: guide/targetgroupbinding/targetgroupbinding.md
-  #         - Specification: guide/targetgroupbinding/spec.md
-  #     - Tasks:
-  #         - Cognito Authentication: guide/tasks/cognito_authentication.md
-  #         - SSL Redirect: guide/tasks/ssl_redirect.md
-  #     - Use Cases:
-  #       - NLB TLS Termiation: guide/use_cases/nlb_tls_termination/index.md
-  #       - Externally Managed Load Balancer: guide/use_cases/self_managed_lb/index.md
-  # - Examples:
-  #   - EchoServer: examples/echo_server.md
+    - Logs: getting_started/upgrade/logs.md
+    - Metrics: getting_started/upgrade/metrics.md
+  - Deployment: deployment.md
   #   - gRPCServer: examples/grpc_server.md
   #   - Setup External DNS: guide/integrations/external_dns.md
   #   - RBAC to access OIDC Secret: examples/secrets_access.md
@@ -41,10 +23,12 @@ nav:
 
 plugins:
   - search
+  # - git-revision-date-localized:
+  #     enable_creation_date: true
 theme:
   name: material
   language: en
-  favicon: assets/images/aws_load_balancer_icon.svg
+  favicon: assets/images/anomaly-detection.svg
   palette:
     primary: indigo
     accent: indigo
@@ -63,7 +47,8 @@ markdown_extensions:
   - pymdownx.tasklist:
       custom_checkbox: true
   - pymdownx.superfences
-  - pymdownx.tabbed
+  - pymdownx.tabbed:
+      alternate_style: true
   - pymdownx.emoji:
       emoji_index: !!python/name:materialx.emoji.twemoji
       emoji_generator: !!python/name:materialx.emoji.to_svg
@@ -72,4 +57,4 @@ markdown_extensions:
 extra_css:
   - https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css
 extra_javascript:
-  - https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js
+  - https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js  
