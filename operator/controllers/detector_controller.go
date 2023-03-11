@@ -99,68 +99,6 @@ func (r *DetectorReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 		}
 	}
 	
-	// deployment := r.newDeployment(detector)
-	// deployment_exist := deployment.DeepCopy()
-	// err = r.Get(ctx, req.NamespacedName, deployment_exist)
-	// if err == nil {
-	// 	if !errors.IsNotFound(err) {
-	// 		if !reflect.DeepEqual(deployment.Spec , deployment_exist.Spec) {
-	// 			// Update the Deployment
-	// 			deployment_exist.Spec = deployment.Spec
-	// 			err = r.Update(ctx, deployment_exist)
-	// 			if err != nil {
-	// 				return ctrl.Result{}, err
-	// 			}
-	// 		}
-	// 	}
-	// }
-	
-	// size := int32(1)
-	// if *deployment.Spec.Replicas != size {
-	// 	deployment.Spec.Replicas = &size
-	// 	if err = r.Update(ctx, deployment); err != nil {
-	// 		return ctrl.Result{}, err
-	// 	}
-	// 	return ctrl.Result{Requeue: true}, nil
-	// }
-
-	// if err := r.createFinalizerCallback(ctx, detector); err != nil {
-	// 	logger.Error(err, "error occurred while dealing with the creation of finalizer")
-	// }
-	
-
-	// serviceaccount := r.newServiceAccount(detector)
-	// serviceaccount_exist := serviceaccount.DeepCopy()
-	// err = r.Get(ctx, req.NamespacedName, serviceaccount_exist)
-	// if err == nil {
-	// 	if !errors.IsNotFound(err) {
-	// 		if !reflect.DeepEqual(serviceaccount , serviceaccount_exist) {
-	// 			// Update the Deployment
-	// 			serviceaccount_exist = serviceaccount
-	// 			err = r.Update(ctx, serviceaccount_exist)
-	// 			if err != nil {
-	// 				return ctrl.Result{}, err
-	// 			}
-	// 		}
-	// 	}
-	// }
-
-	// configmap := r.newConfigMap(detector)
-	// configmap_exist := configmap.DeepCopy()
-	// err = r.Get(ctx, req.NamespacedName, configmap_exist)
-	// if err == nil {
-	// 	if !errors.IsNotFound(err) {
-	// 		if !reflect.DeepEqual(configmap.Data, configmap_exist.Data) {
-	// 			// Update the Deployment
-	// 			configmap_exist.Data = configmap.Data
-	// 			err = r.Update(ctx, configmap_exist)
-	// 			if err != nil {
-	// 				return ctrl.Result{}, err
-	// 			}
-	// 		}
-	// 	}
-	// }
-
 	if detector.GetDeletionTimestamp().IsZero() {
 
 		serviceaccount := r.newServiceAccount(detector)
