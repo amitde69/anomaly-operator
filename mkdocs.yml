@@ -1,4 +1,4 @@
-site_name: AWS Load Balancer Controller
+site_name: K8S Anomaly Detection Operator
 repo_name: kubernetes-sigs/aws-load-balancer-controller
 repo_url: https://github.com/kubernetes-sigs/aws-load-balancer-controller
 edit_uri: edit/main/docs/
@@ -7,37 +7,35 @@ strict: true
 nav:
   - Home:
     - Welcome: index.md
-    - How it works: how-it-works.md
-  - Deployment:
-    - Installation Guide: deploy/installation.md
-    - Configurations: deploy/configurations.md
-    - Subnet Discovery: deploy/subnet_discovery.md
-    - Pod Readiness Gate: deploy/pod_readiness_gate.md
-    - Upgrade:
-          - Migrate v1 to v2: deploy/upgrade/migrate_v1_v2.md
-  - Guide:
-      - Ingress:
-          - Annotations: guide/ingress/annotations.md
-          - Specification: guide/ingress/spec.md
-          - IngressClass: guide/ingress/ingress_class.md
-          - Certificate Discovery: guide/ingress/cert_discovery.md
-      - Service:
-          - Network Load Balancer: guide/service/nlb.md
-          - Annotations: guide/service/annotations.md
-      - TargetGroupBinding:
-          - TargetGroupBinding: guide/targetgroupbinding/targetgroupbinding.md
-          - Specification: guide/targetgroupbinding/spec.md
-      - Tasks:
-          - Cognito Authentication: guide/tasks/cognito_authentication.md
-          - SSL Redirect: guide/tasks/ssl_redirect.md
-      - Use Cases:
-        - NLB TLS Termiation: guide/use_cases/nlb_tls_termination/index.md
-        - Externally Managed Load Balancer: guide/use_cases/self_managed_lb/index.md
-  - Examples:
-    - EchoServer: examples/echo_server.md
-    - gRPCServer: examples/grpc_server.md
-    - Setup External DNS: guide/integrations/external_dns.md
-    - RBAC to access OIDC Secret: examples/secrets_access.md
+  - Getting Started:
+    - Operator Deployment: getting_started/operator_deployment.md
+    - Detector CRD:
+      - Configuration: getting_started/configurations.md
+    - Logs: getting_started/upgrade/migrate_v1_v2.md
+    - Metrics: getting_started/upgrade/migrate_v1_v2.md
+  # - Guide:
+  #     - Ingress:
+  #         - Annotations: guide/ingress/annotations.md
+  #         - Specification: guide/ingress/spec.md
+  #         - IngressClass: guide/ingress/ingress_class.md
+  #         - Certificate Discovery: guide/ingress/cert_discovery.md
+  #     - Service:
+  #         - Network Load Balancer: guide/service/nlb.md
+  #         - Annotations: guide/service/annotations.md
+  #     - TargetGroupBinding:
+  #         - TargetGroupBinding: guide/targetgroupbinding/targetgroupbinding.md
+  #         - Specification: guide/targetgroupbinding/spec.md
+  #     - Tasks:
+  #         - Cognito Authentication: guide/tasks/cognito_authentication.md
+  #         - SSL Redirect: guide/tasks/ssl_redirect.md
+  #     - Use Cases:
+  #       - NLB TLS Termiation: guide/use_cases/nlb_tls_termination/index.md
+  #       - Externally Managed Load Balancer: guide/use_cases/self_managed_lb/index.md
+  # - Examples:
+  #   - EchoServer: examples/echo_server.md
+  #   - gRPCServer: examples/grpc_server.md
+  #   - Setup External DNS: guide/integrations/external_dns.md
+  #   - RBAC to access OIDC Secret: examples/secrets_access.md
 
 
 

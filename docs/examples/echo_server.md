@@ -41,7 +41,7 @@ In this walkthrough, you'll
     ```
 
 ## Setup the AWS Load Balancer controller
-1.  Refer to the [installation instructions](../deploy/installation.md) to setup the controller
+1.  Refer to the [installation instructions](../getting_started/operator_deployment.md) to setup the controller
 
 1.  Verify the deployment was successful and the controller started.
 

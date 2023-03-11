@@ -15,10 +15,10 @@ It supports existing AWS resources provisioned by AWSALBIngressController(>=v1.1
 
 1. The AWS LoadBalancer resource created for your Ingress will be preserved. If migrating from <v1.1.3, a new AWS LoadBalancer resource will be created and the old AWS LoadBalancer will remain in the account. However, the old AWS LoadBalancer will not be used for the ingress resource.
 
-2. If [security-groups](../../guide/ingress/annotations.md#security-groups) annotation isn't used, the SecurityGroup rule on worker node's SecurityGroup that allow LoadBalancer traffic should be manually adjusted post migration.
+2. If [security-groups]() annotation isn't used, the SecurityGroup rule on worker node's SecurityGroup that allow LoadBalancer traffic should be manually adjusted post migration.
     
     !!!tip "details"
-        when [security-groups](../../guide/ingress/annotations.md#security-groups) annotation isn't used:
+        when [security-groups]() annotation isn't used:
         
         * a managed SecurityGroup will be created and attached to ALB. This SecurityGroup will be preserved.
         * an inbound rule will be added to your worker node securityGroups which allow traffic from the above managed SecurityGroup for ALB.
@@ -65,7 +65,7 @@ foo@bar:~$ kubectl describe deployment  -n kube-system  alb-ingress-controller |
         Existing Ingress resources do not need to be deleted.
 
 3. Install new AWSLoadBalancerController
-    1. Install AWSLoadBalancerController(v2.4.1) by following the [installation instructions](../installation.md)
+    1. Install AWSLoadBalancerController(v2.4.1) by following the [installation instructions](../operator_deployment.md)
     2. Grant [additional IAM policy](../../install/iam_policy_v1_to_v2_additional.json) needed for migration to the controller.
 
 4. Verify all Ingresses works as expected.

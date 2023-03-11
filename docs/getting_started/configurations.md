@@ -12,7 +12,7 @@ This document covers configuration of the AWS Load Balancer controller
 To perform operations, the controller must have required IAM role capabilities for accessing and
 provisioning ALB resources. There are many ways to achieve this, such as loading `AWS_ACCESS_KEY_ID/AWS_SECRET_ACCESS_KEY` as environment variables or using [kube2iam](https://github.com/jtblin/kube2iam).
 
-Refer to the [installation guide](installation.md) for installing the controller in your kubernetes cluster and for the minimum required IAM permissions.
+Refer to the [installation guide](operator_deployment.md) for installing the controller in your kubernetes cluster and for the minimum required IAM permissions.
 
 ## Setting Ingress Resource Scope
 You can limit the ingresses ALB ingress controller controls by combining following two approaches:
