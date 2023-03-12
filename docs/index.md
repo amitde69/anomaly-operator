@@ -55,8 +55,8 @@ expose an anomaly and push a notification to the relevant team in order to look 
 ## Features
 
 * Integrates simply with Prometheus metrics.
-* Leverages Prophet framework by facebook [https://github.com/facebook/prophet]
-* Allows customisation of Kubernetes resource spec. Can work on managed solutions such as EKS or GCP.
-* light weight and scalable
-* simplified configuration and easy integration
+* Leverages Prophet framework by facebook [https://github.com/facebook/prophet](https://github.com/facebook/prophet)
+* Allows customization of Kubernetes resource spec. Can work on managed solutions such as EKS or GCP.
+* Light weight and scalable
+* Simplified configuration and easy integration
 
