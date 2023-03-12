@@ -1,4 +1,11 @@
 <p align="center">
+    <strong>
+        Checkout the Documentation
+        <a href="https://amitde69.github.io/anomaly-operator/">here </a>
+    </strong>
+</p>
+
+<p align="center">
     <img src="docs/assets/images/anomaly-detection.svg" alt="Anomaly logo" width="200" />
     <img src="docs/assets/images/kubernetes_icon.svg" alt="Kubernetes logo" width="200" />
 </p>
