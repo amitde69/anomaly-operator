@@ -20,7 +20,7 @@ We recommend using the Helm chart.
     helm install anomaly-operator helm/
     ```
 
-        !!!tip
+        !!!note
             The `helm install` command automatically applies the CRDs.
 
 
@@ -37,10 +37,17 @@ We recommend using the Helm chart.
     ```
 
 === "Via YAML manifests"
-    ### Template The Helm Chart
-
+    1. Clone the Operator repo
+    ```
+    git clone https://github.com/amitde69/anomaly-operator
+    ```
+    2. Template The Helm Chart
     ```
     helm template helm > deploy.yaml
+    ```
+    3. Apply the deploy.yaml
+    ```
+    kubectl apply -f deploy.yaml
     ```
 
     Helm template command to override image repo and tag : 
@@ -55,13 +62,6 @@ We recommend using the Helm chart.
     helm install helm -n custom-namespace > deploy.yaml
     ```
 
-
-    ### Apply YAML
-    
-    Apply the deploy.yaml
-    ```
-    kubectl apply -f deploy.yaml
-    ```
 ## Upgrade The Operator
 
 The operator doesn't receive security updates automatically. You need to manually upgrade to a newer version when it becomes available.

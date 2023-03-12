@@ -1,0 +1,37 @@
+apiVersion: monitoring.amitdebachar/v1alpha1
+kind: Detector
+metadata:
+  name: custom-anomaly-spec-detector
+spec:
+  image: "amitde7896/anomaly-operator:0.1.1-detector"
+  prom_url: "http://prometheus.monitoring.svc.cluster.local"
+  interval_mins: "15"
+  queries:
+  - name: "sum_pods_running_anomaly"
+    query: 'sum(kube_pod_status_phase{phase=~"Running", pod=~"application-pod-.*"}) > 1'
+    train_window: "14d"
+
+    ## (optional) parse_datetime formated text such as - "1m" "4h" "2d" "3w"
+    ## Past period for which the detector will evaluate anomalies based on "train_window" period
+    ## Default: "1h" 
+    detection_window_hours: "2h"
+
+    ## (optional) float value which tunes the Prophet parameter "changepoint_prior_scale"
+    ## https://facebook.github.io/prophet/docs/trend_changepoints.html#adjusting-trend-flexibility
+    ## This will affect how flexible or stiff the model is between change points (date points)
+    ## Note: Lower is stiffer Higher is more flexible  
+    ## Default: "0.05" 
+    flexibility: "10"
+
+    ## (optional) integer value which is used for PromQL request in the "step" paramter
+    ## This will affect how many data points the detector is getting from Prometheus for a given timeframe
+    ## Note: Higher means longer query time and more sensitive to anomalies
+    ## Default: number of hours in "train_window"
+    ## Disclaimer: setting too small value for a longer "train_window" can cause PromQL to fail
+    resolution: 1400
+
+    ## (optional) integer value represent precetange 
+    ## which is used to increase/decrease the buffer the detector will append to the detection threshold 
+    ## Note: Higher means less likely to find anomalies
+    ## Default: 100
+    buffer_pct: 150

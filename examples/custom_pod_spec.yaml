@@ -1,0 +1,43 @@
+apiVersion: monitoring.amitdebachar/v1alpha1
+kind: Detector
+metadata:
+  name: custom-pod-spec-detector
+spec:
+  image: "amitde7896/anomaly-operator:0.1.1-detector"
+  prom_url: "http://prometheus.monitoring.svc.cluster.local" 
+  interval_mins: "15"
+  pod_spec:
+    spec:
+      containers:
+        - env:
+            - name: LOG_LEVEL
+              value: INFO
+          image: amitde7896/anomaly-operator:0.1.1-detector
+          imagePullPolicy: Always
+          name: custom-pod-spec-detector
+          ports:
+            - containerPort: 9090
+              name: http
+              protocol: TCP
+          resources:
+            limits:
+              cpu: 1500m
+              memory: 1G
+            requests:
+              cpu: 1500m
+              memory: 1G
+          volumeMounts:
+            - mountPath: /app/config.yaml
+              name: custom-pod-spec-detector
+              subPath: custom-pod-spec-detector-conf.yaml
+      serviceAccount: custom-pod-spec-detector
+      serviceAccountName: custom-pod-spec-detector
+      volumes:
+        - configMap:
+            defaultMode: 420
+            name: custom-pod-spec-detector
+          name: custom-pod-spec-detector
+  queries:
+  - name: "sum_pods_running_anomaly"
+    query: 'sum(kube_pod_status_phase{phase=~"Running", pod=~"application-pod-.*"}) > 1'
+    train_window: "14d"

@@ -9,13 +9,14 @@ K8S Anomaly Detector Operator supports creating a [CRD](https://kubernetes.io/do
 The name of the Detector CR is propagated to the `labels` `selectors` and `name` of every resource it creates.
 ```yaml
 ...
+kind: Detector
 metadata:
   name: detector-name
 ...
 ```
 
 ```bash
-> kubectl get cm,deploy,sa -n anomaly-operator
+> kubectl get cm,deploy,sa -n detectors
 
 NAME                              DATA   AGE
 configmap/detector-name           1      5m
@@ -31,7 +32,7 @@ serviceaccount/detector-name      0         5m
 
 The `Deployment` resource is desgined to run as a single replica pod.
 !!! tip
-    If a Detector `queries` list is too long or the quries are too heavy
+    If a Detector `queries` list is too long or the queries are too heavy
     it is reccomended to split it to smaller and distributed Detector resources
 
 ## ConfigMap
