@@ -64,7 +64,7 @@ def detect_cycle(config, logger):
             last_hours_data = future[future['Date'] >= x_hours_ago]
             last_hours_data_y = model_history[model_history['Date'] >= x_hours_ago]
             if len(last_hours_data) < 1:
-                logger.info(f"last {detection_window_hours} hours data is empty. skipiing.")
+                logger.debug(f"last {detection_window_hours} hours data is empty. skipiing.")
                 continue
             forecast = m.predict(last_hours_data)
             # print(model_history)
@@ -87,6 +87,7 @@ def detect_cycle(config, logger):
         # find the dataframes having same indices
         forecast_truncated_index = forecast.index.intersection(df.index)
         forecast_truncated = forecast.loc[forecast_truncated_index]
+        print(forecast_truncated)
 
         # Identify the thresholds with some buffer
         upper_buffer = np.max( forecast_truncated['yhat_upper']) * buffer_pct
