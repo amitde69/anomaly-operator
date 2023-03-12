@@ -38,7 +38,7 @@ raise issues, and to contribute to the project.
 # What is it?
 
 K8S Anomaly Detection Operator is a controller to help manage Detector deployments for a Kubernetes cluster using CRDs (Custom Resource Defenitions).
-Detector deployments allow you to configure Prometheus endpoint and expressions and some extra configuration to monitor and output if anomalies found for given timeframe.
+Detector deployments allow you to configure Prometheus endpoints + PromQL expressions and some extra configuration to monitor/alert on anomalies found for a given timeframe.
 
 # Why would I use it?
 
