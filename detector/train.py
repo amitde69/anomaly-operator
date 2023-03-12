@@ -90,7 +90,11 @@ def detect_cycle(config, logger):
 
         # Identify the thresholds with some buffer
         upper_buffer = np.max( forecast_truncated['yhat_upper']) * buffer_pct
-        lower_buffer = np.min( forecast_truncated['yhat_lower']) / buffer_pct
+        if buffer_pct != 0:
+            lower_buffer = np.min( forecast_truncated['yhat_lower']) / buffer_pct
+        else:
+            logger.error(f"Threshold evaluation failed. skipping {query_name}.")
+            continue
         
         forecast_truncated_last = forecast_truncated
         forecast_truncated_last["Date"] = pd.to_datetime(forecast_truncated.ds)
