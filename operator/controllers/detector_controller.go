@@ -140,9 +140,9 @@ func (r *DetectorReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 			}
 		}
 		size := int32(1)
-		if *deployment.Spec.Replicas != size {
-			deployment.Spec.Replicas = &size
-			if err = r.Update(ctx, deployment); err != nil {
+		if *deployment_exist.Spec.Replicas != size {
+			deployment_exist.Spec.Replicas = &size
+			if err = r.Update(ctx, deployment_exist); err != nil {
 				return ctrl.Result{}, err
 			}
 		}
@@ -158,7 +158,7 @@ func (r *DetectorReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 			// fmt.Printf("found existing config map %w", err)
 			if errors.IsNotFound(err) {
 				// create a new configmap
-				logger.Info("Creating new deployment following new detector resource")
+				logger.Info("Creating new configmap following new detector resource")
 				if err = r.Create(ctx, configmap); err != nil {
 					return ctrl.Result{}, err
 				}
