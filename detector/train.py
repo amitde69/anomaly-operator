@@ -87,7 +87,7 @@ def detect_cycle(config, logger):
         # find the dataframes having same indices
         forecast_truncated_index = forecast.index.intersection(df.index)
         forecast_truncated = forecast.loc[forecast_truncated_index]
-        print(forecast_truncated)
+        # print(forecast_truncated)
 
         # Identify the thresholds with some buffer
         upper_buffer = np.max( forecast_truncated['yhat_upper']) * buffer_pct
@@ -119,7 +119,7 @@ def detect_cycle(config, logger):
             logger.warning(f"Found {len(anomalies)} anomalies for {query_name} in {extra_data}")
             for index, row in anomalies.iterrows():
                 anoamly_counter+=1
-                logger.warning(f"[{query_name}] {extra_data} time: {row['ds']} actual: {row['y']}")
+                logger.warning(f"[{query_name}] {extra_data} time: {row['ds']} value: {row['y']}")
             if local == 1:
                 fig = None
                 ax = None
