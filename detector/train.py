@@ -51,7 +51,7 @@ def detect_cycle(config, logger):
                     seasonality_mode='multiplicative')
         try:
             if len(df) < 2:
-                logger.info("query returned less then 2 results. skipiing.")
+                logger.info(f"query {query_name} returned less than 2 results. skipiing.")
                 continue
             m.fit(df)
             future = m.make_future_dataframe(periods=0) 
