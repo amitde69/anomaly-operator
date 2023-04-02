@@ -384,7 +384,7 @@ func (r *DetectorReconciler) convertQuerySpectoQuery(cr *monitoringv1alpha1.Dete
 		newQuery := monitoringv1alpha1.Query{}
 		if query.Flexibility != "" {
 			var err error
-			newQuery.Flexibility, err = strconv.ParseFloat(query.Flexibility, 32)
+			newQuery.Flexibility, err = strconv.ParseFloat(query.Flexibility, 4)
 			if err != nil {
 				fmt.Printf("Error while parsing QuerySpec")
 			}
