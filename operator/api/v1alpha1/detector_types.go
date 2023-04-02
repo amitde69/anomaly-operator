@@ -86,14 +86,14 @@ func init() {
 type Config struct {
     IntervalMins string      `yaml:"interval_mins"`
     PromURL      string   `yaml:"prom_url"`
-    Queries      []QuerySpec `yaml:"queries"`
+    Queries      []Query `yaml:"queries"`
 }
 
 type Query struct {
-    BufferPct   *int     `yaml:"buffer_pct,omitempty"`
-    Flexibility float64  `yaml:"flexibility"`
+    Buffer_Pct   *int     `yaml:"buffer_pct,omitempty"`
+    Flexibility float64  `yaml:"flexibility,omitempty"`
     Name        string   `yaml:"name"`
     Query       string   `yaml:"query"`
-    Resolution  int      `yaml:"resolution"`
-    TrainWindow string   `yaml:"train_window"`
+    Resolution  int      `yaml:"resolution,omitempty"`
+    Train_Window string   `yaml:"train_window"`
 }

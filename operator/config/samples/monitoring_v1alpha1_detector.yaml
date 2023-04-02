@@ -130,6 +130,24 @@ spec:
   - name: "microservice_backend_scale"
     query: 'sum(kube_pod_labels{label_app=~"kccproxy|kwsingest|kphoenix|kphoenix-standby|knginx|ingesthandler|transformationhandler|ms-.*"}) by (label_app) >= 10'
     train_window: "1d"
-    flexibility: "5"
+    # flexibility: "5"
+    # resolution: 200
+    # buffer_pct: 150
+  - name: "microservice_backend_scale_2"
+    query: 'sum(kube_pod_labels{label_app=~"kccproxy|kwsingest|kphoenix|kphoenix-standby|knginx|ingesthandler|transformationhandler|ms-.*"}) by (label_app) >= 10'
+    train_window: "1d"
+    # flexibility: "5"
     resolution: 200
-    buffer_pct: 150
+    # buffer_pct: 150
+  - name: "microservice_backend_scale_3"
+    query: 'sum(kube_pod_labels{label_app=~"kccproxy|kwsingest|kphoenix|kphoenix-standby|knginx|ingesthandler|transformationhandler|ms-.*"}) by (label_app) >= 10'
+    train_window: "1d"
+    # flexibility: "5"
+    # resolution: 200
+    buffer_pct: 100
+  - name: "microservice_backend_scale_4"
+    query: 'sum(kube_pod_labels{label_app=~"kccproxy|kwsingest|kphoenix|kphoenix-standby|knginx|ingesthandler|transformationhandler|ms-.*"}) by (label_app) >= 10'
+    train_window: "1d"
+    flexibility: "0.5"
+    # resolution: 200
+    # buffer_pct: 150

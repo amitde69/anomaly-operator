@@ -36,6 +36,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	corev1 "k8s.io/api/core/v1"
 	"gopkg.in/yaml.v3"
+	"strconv"
 
 )
 
@@ -348,10 +349,11 @@ func (r *DetectorReconciler) newServiceAccount(cr *monitoringv1alpha1.Detector) 
 
 func (r *DetectorReconciler) newConfigMap(cr *monitoringv1alpha1.Detector) *corev1.ConfigMap {
 	intervalMins := cr.Spec.IntervalMins
+	querySpec := r.convertQuerySpectoQuery(cr)
 	configData := monitoringv1alpha1.Config{
 		IntervalMins: intervalMins,
 		PromURL: cr.Spec.PromUrl,
-		Queries: cr.Spec.Queries,
+		Queries: querySpec,
 	}
 	
 	// Convert the configData struct to YAML format
@@ -376,10 +378,40 @@ func (r *DetectorReconciler) newConfigMap(cr *monitoringv1alpha1.Detector) *core
     return configMap
 }
 
+func (r *DetectorReconciler) convertQuerySpectoQuery(cr *monitoringv1alpha1.Detector) []monitoringv1alpha1.Query {
+	querySpec := []monitoringv1alpha1.Query{}
+	for _, query := range cr.Spec.Queries {
+		newQuery := monitoringv1alpha1.Query{}
+		if query.Flexibility != "" {
+			var err error
+			newQuery.Flexibility, err = strconv.ParseFloat(query.Flexibility, 32)
+			if err != nil {
+				fmt.Printf("Error while parsing QuerySpec")
+			}
+		}
+		if query.Buffer_Pct != 0 {
+			newQuery.Buffer_Pct = GetIntPointer(int(query.Buffer_Pct))
+		}
+		if query.Resolution != 0 {
+			newQuery.Resolution = int(query.Resolution)
+		}
+		newQuery.Name = query.Name
+		newQuery.Train_Window = query.Train_Window
+		newQuery.Query = query.Query
+		querySpec = append(querySpec, newQuery)
+	}
+	return querySpec
+}
+
 func resourceQuantity(s string) resource.Quantity {
     q, err := resource.ParseQuantity(s)
     if err != nil {
         panic(err)
     }
     return q
+}
+
+
+func GetIntPointer(value int) *int {
+    return &value
 }
