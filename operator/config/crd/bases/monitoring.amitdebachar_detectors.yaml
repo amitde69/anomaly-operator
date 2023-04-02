@@ -7242,8 +7242,17 @@ spec:
                       type: integer
                     train_window:
                       type: string
+                  required:
+                  - name
+                  - query
+                  - train_window
                   type: object
                 type: array
+            required:
+            - image
+            - interval_mins
+            - prom_url
+            - queries
             type: object
           status:
             description: DetectorStatus defines the observed state of Detector

@@ -30,10 +30,10 @@ type DetectorSpec struct {
 	// Important: Run "make" to regenerate code after modifying this file
 
 	// Foo is an example field of Detector. Edit detector_types.go to remove/update
-	PromUrl      string      `json:"prom_url,omitempty"`
-	Image      string      `json:"image,omitempty"`
-	IntervalMins string      `json:"interval_mins,omitempty"`
-	Queries      []QuerySpec `json:"queries,omitempty"`
+	PromUrl      string      `json:"prom_url,required"`
+	Image      string      `json:"image,required"`
+	IntervalMins string      `json:"interval_mins,required"`
+	Queries      []QuerySpec `json:"queries,required"`
 	PodSpec		v1.PodTemplateSpec	`json:"pod_spec,omitempty"`
 }
 
@@ -42,9 +42,9 @@ type QuerySpec struct {
 	// Important: Run "make" to regenerate code after modifying this file
 
 	// Foo is an example field of Detector. Edit detector_types.go to remove/update
-	Name        string `json:"name,omitempty"`
-	Query       string `json:"query,omitempty"`
-	Train_Window string `json:"train_window,omitempty"`
+	Name        string `json:"name,required"`
+	Query       string `json:"query,required"`
+	Train_Window string `json:"train_window,required"`
 	Flexibility string `json:"flexibility,omitempty"`
 	Buffer_Pct   int64  `json:"buffer_pct,omitempty"`
 	Resolution  int64  `json:"resolution,omitempty"`
