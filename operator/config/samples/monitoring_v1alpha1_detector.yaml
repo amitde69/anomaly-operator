@@ -135,6 +135,7 @@ spec:
     # buffer_pct: 150
   - name: "microservice_backend_scale_2"
     query: 'sum(kube_pod_labels{label_app=~"kccproxy|kwsingest|kphoenix|kphoenix-standby|knginx|ingesthandler|transformationhandler|ms-.*"}) by (label_app) >= 10'
+    detection_window_hours: 1
     train_window: "1d"
     # flexibility: "5"
     resolution: 200

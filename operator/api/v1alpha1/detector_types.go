@@ -45,6 +45,7 @@ type QuerySpec struct {
 	Name        string `json:"name,required"`
 	Query       string `json:"query,required"`
 	Train_Window string `json:"train_window,required"`
+	Detection_Window_Hours int64 `json:"detection_window_hours,omitempty"`
 	Flexibility string `json:"flexibility,omitempty"`
 	Buffer_Pct   int64  `json:"buffer_pct,omitempty"`
 	Resolution  int64  `json:"resolution,omitempty"`
@@ -95,5 +96,6 @@ type Query struct {
     Name        string   `yaml:"name"`
     Query       string   `yaml:"query"`
     Resolution  int      `yaml:"resolution,omitempty"`
+	Detection_Window_Hours int64 `yaml:"detection_window_hours,omitempty"`
     Train_Window string   `yaml:"train_window"`
 }

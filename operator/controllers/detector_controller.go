@@ -395,6 +395,9 @@ func (r *DetectorReconciler) convertQuerySpectoQuery(cr *monitoringv1alpha1.Dete
 		if query.Resolution != 0 {
 			newQuery.Resolution = int(query.Resolution)
 		}
+		if query.Detection_Window_Hours != 0 {
+			newQuery.Detection_Window_Hours = int64(query.Detection_Window_Hours)
+		}
 		newQuery.Name = query.Name
 		newQuery.Train_Window = query.Train_Window
 		newQuery.Query = query.Query

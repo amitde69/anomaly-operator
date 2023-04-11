@@ -7229,6 +7229,9 @@ spec:
                     buffer_pct:
                       format: int64
                       type: integer
+                    detection_window_hours:
+                      format: int64
+                      type: integer
                     flexibility:
                       type: string
                     name:
