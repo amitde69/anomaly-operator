@@ -16,17 +16,7 @@
     <!-- <img src="https://img.shields.io/badge/status-ga-brightgreen?style=flat" alt="status is ga"/> -->
     <!-- <img src="https://img.shields.io/github/license/kubernetes-sigs/aws-load-balancer-controller?style=flat" alt="apache license"/> -->
 </p>
-<p align="center">
-    <a href="https://goreportcard.com/report/github.com/kubernetes-sigs/aws-load-balancer-controller">
-        <img src="https://goreportcard.com/badge/github.com/kubernetes-sigs/aws-load-balancer-controller" alt="go report card"/>
-    </a>
-    <img src="https://img.shields.io/github/watchers/kubernetes-sigs/aws-load-balancer-controller?style=social" alt="github watchers"/>
-    <img src="https://img.shields.io/github/stars/kubernetes-sigs/aws-load-balancer-controller?style=social" alt="github stars"/>
-    <img src="https://img.shields.io/github/forks/kubernetes-sigs/aws-load-balancer-controller?style=social" alt="github forks"/>
-    <!-- <a href="https://hub.docker.com/r/amazon/aws-alb-ingress-controller/">
-        <img src="https://img.shields.io/docker/pulls/amazon/aws-alb-ingress-controller" alt="docker pulls"/> -->
-    </a>
-</p>
+
 
 
 ## K8S Anomaly Detection Operator
