@@ -10,11 +10,10 @@ nav:
     - Welcome: index.md
   - Getting Started:
     - Operator Deployment: getting_started/operator_deployment.md
-    - Detector CRD:
-      - Configuration: getting_started/configurations.md
-    - Logs: getting_started/upgrade/logs.md
-    - Metrics: getting_started/upgrade/metrics.md
-  - Deployment: deployment.md
+    - Detector CR: getting_started/examples.md
+    - Logs: getting_started/logs.md
+    - Metrics: getting_started/metrics.md
+  - Architecture: architecture.md
   #   - gRPCServer: examples/grpc_server.md
   #   - Setup External DNS: guide/integrations/external_dns.md
   #   - RBAC to access OIDC Secret: examples/secrets_access.md

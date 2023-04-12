@@ -3,7 +3,7 @@ kind: Detector
 metadata:
   name: custom-anomaly-spec-detector
 spec:
-  image: "amitde7896/anomaly-operator:0.1.1-detector"
+  image: "amitde7896/anomaly-operator:latest-detector"
   prom_url: "http://prometheus.monitoring.svc.cluster.local"
   interval_mins: "15"
   queries:

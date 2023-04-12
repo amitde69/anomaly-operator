@@ -1,6 +1,6 @@
 # Detector Deployment and Architecture  
 
-K8S Anomaly Detector Operator supports creating a [CRD](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/) which manages a few other Kubernetes resources:
+K8S Anomaly Detector Operator supports creating a [CR](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/) which propagtes a few other Kubernetes resources:
 
 * `Deployment`
 * `ConfigMap`
@@ -37,7 +37,7 @@ The `Deployment` resource is desgined to run as a single replica pod.
 
 ## ConfigMap
 
-The `ConfigMap` resource is injected with the detector configs passed in the Detector resource.
+The `ConfigMap` resource is created with the detector configurations from the Detector resource.
 !!! note
     If the spec of the Detector changes the `ConfigMap` will be updated with the new config 
     and the `Deployment` will be rolled out in order to load the new `ConfigMap`.

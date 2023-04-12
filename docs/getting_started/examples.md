@@ -1,11 +1,10 @@
-# Detector configuration options
-This document covers configuration of a Detector resource.
+# Detector configuration options and examples
+This document covers configuration of a `Detector` resource.
 
-When configuring a Detector resource there are a few required fields and optional fields
+When configuring a `Detector` resource there are a few required fields and optional fields
 
-<!-- An example of the container spec portion of the controller, only listening for resources with the class "alb", would be as follows. -->
 ### Minimal Spec
-An example minimal spec with only required fields would be as follows.
+An example minimal spec with only required fields would be as follows:
 
 ```yaml
 apiVersion: monitoring.amitdebachar/v1alpha1
@@ -15,7 +14,7 @@ metadata:
 spec:
   
   ## (required) The detector image
-  image: "amitde7896/anomaly-operator:0.1.1-detector"
+  image: "amitde7896/anomaly-operator:latest-detector"
   
   ## (required) Promethus HTTP API endpoint 
   prom_url: "http://prometheus.monitoring.svc.cluster.local"
@@ -44,7 +43,7 @@ spec:
 ### Custom Anomaly Spec
 You can tune some parameters in order to avoid misclassifying an anomaly.
 
-An example custom anomaly spec with optional fields would be as follows.
+An example custom anomaly spec with optional fields would be as follows:
 
 ```yaml
 apiVersion: monitoring.amitdebachar/v1alpha1
@@ -92,15 +91,15 @@ You can override the pod template and spec used for the detector pod.
     by the operator.
 
     It is reccommended to at least use the same default spec and add more options
-    and not change the existing ones such as env section and volumeMounts/volumes.
+    and not change the existing ones such as `env` section and `volumeMounts`/`volumes`.
 
-    Use at your own risk. 
+    Change at your own risk. 
 
 !!!warning
     Both `image` and the `pod_spec.spec.containers.*.image` are required
     in this case but only the `containers` section will determine the image used in the created deployment
 
-An example custom pod spec would be as follows.
+An example custom pod spec would be as follows:
 
 ```yaml
 apiVersion: monitoring.amitdebachar/v1alpha1
@@ -116,7 +115,7 @@ spec:
         - env:
             - name: LOG_LEVEL
               value: INFO
-          image: amitde7896/anomaly-operator:0.1.1-detector
+          image: amitde7896/anomaly-operator:0.1.3-detector
           imagePullPolicy: Always
           name: custom-detector-spec
           ports:
