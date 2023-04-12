@@ -22,7 +22,7 @@ jobs:
             amitde7896/anomaly-operator
           # generate Docker tags based on the following events/attributes
           tags: |
-            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}.{{minor}}.{{patch}}
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -40,4 +40,4 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: operator
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: ${{ steps.meta.outputs.tags }}-operator
