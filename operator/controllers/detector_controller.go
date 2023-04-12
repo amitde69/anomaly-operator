@@ -288,11 +288,11 @@ func (r *DetectorReconciler) newDeployment(cr *monitoringv1alpha1.Detector) *app
 									}},
 									Resources: corev1.ResourceRequirements{
 										Requests: corev1.ResourceList{
-											"cpu":    resourceQuantity("300m"),
+											"cpu":    resourceQuantity("1"),
 											"memory": resourceQuantity("500M"),
 										},
 										Limits: corev1.ResourceList{
-											"cpu":    resourceQuantity("300m"),
+											"cpu":    resourceQuantity("1"),
 											"memory": resourceQuantity("500M"),
 										},
 									},
