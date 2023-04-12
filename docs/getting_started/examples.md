@@ -115,7 +115,7 @@ spec:
         - env:
             - name: LOG_LEVEL
               value: INFO
-          image: amitde7896/anomaly-operator:0.1.3-detector
+          image: amitde7896/anomaly-operator:latest-detector
           imagePullPolicy: Always
           name: custom-detector-spec
           ports:
