@@ -43,7 +43,7 @@ expose an anomaly and push a notification to the relevant team in order to look 
 
 * Integrates simply with Prometheus metrics.
 * Leverages Prophet framework by facebook [https://github.com/facebook/prophet](https://github.com/facebook/prophet)
-* Allows customization of Kubernetes resource spec. Can work on managed solutions such as EKS or GCP.
+* Allows customization of Kubernetes resource spec. Can work on managed solutions such as EKS or GKE.
 * Light weight and scalable
 * Simplified configuration and easy integration
 

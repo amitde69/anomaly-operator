@@ -14,9 +14,6 @@ nav:
     - Logs: getting_started/logs.md
     - Metrics: getting_started/metrics.md
   - Architecture: architecture.md
-  #   - gRPCServer: examples/grpc_server.md
-  #   - Setup External DNS: guide/integrations/external_dns.md
-  #   - RBAC to access OIDC Secret: examples/secrets_access.md
 
 
 
