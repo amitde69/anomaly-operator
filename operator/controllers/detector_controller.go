@@ -279,7 +279,7 @@ func (r *DetectorReconciler) newDeployment(cr *monitoringv1alpha1.Detector) *app
 									Env: []corev1.EnvVar{
 										{
 											Name: "LOG_LEVEL",
-											Value: "INFO",
+											Value: "WARNING",
 										},
 									},
 									Ports: []corev1.ContainerPort{{

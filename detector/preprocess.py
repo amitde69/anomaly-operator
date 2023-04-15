@@ -59,7 +59,7 @@ def preprocess(config, logger):
 
         columns = ['ds', 'y']
         if len(train_data) == 0:
-            logger.error(f"query {prom_expression} returned 0 results")
+            logger.info(f"query {prom_expression} returned 0 results")
         for metric in train_data: 
             lst = metric['values']
             extra_data = metric['metric']
