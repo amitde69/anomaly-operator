@@ -49,7 +49,7 @@ expose an anomaly and push a notification to the relevant team in order to look 
 
 ## What does a Detector object look like?
 
-`Detectors` are designed to be as sinple as possible, with some optional
+`Detectors` are designed to be as simple as possible, with some optional
 configuration options.
 
 `Detectors` have their own custom resource:
