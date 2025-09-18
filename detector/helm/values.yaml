@@ -1,26 +1,26 @@
 config:
-  prom_url: "https://prometheus.frp1.ott.kaltura.com"
+  prom_url: "https://prometheus.example.com"
   interval_mins: 15
   queries:
   - name: "microservice_backend_restarts"
-    query: 'sum(increase(kube_pod_container_status_restarts_total{pod=~"kccproxy-.*|kwsingest-.*|kphoenix-.*|kphoenix-standby-.*|knginx-.*|ingesthandler-.*|transformationhandler-.*|ms-.*"}[5m])) by (container) > 1'
+    query: 'sum(increase(kube_pod_container_status_restarts_total{pod=~"ms-.*"}[5m])) by (container) > 1'
     train_window: "14d"
     flexibility: 0.9
     resolution: 1400
     buffer_pct: 150
   - name: "microservice_backend_scale"
-    query: 'sum(kube_pod_labels{label_app=~"kccproxy|kwsingest|kphoenix|kphoenix-standby|knginx|ingesthandler|transformationhandler|ms-.*"}) by (label_app) >= 10'
+    query: 'sum(kube_pod_labels{label_app=~"ms-.*"}) by (label_app) >= 10'
     train_window: "14d"
     flexibility: 0.9
     resolution: 1400
     buffer_pct: 150
   - name: "windows_services_adapters_scale"
-    query: 'sum(wmi_exporter_build_info{Type=~"adapters|imageserver|harvester|dms|api|remotetasks|tvm"}) by (Type)'
+    query: 'sum(wmi_exporter_build_info{}) by (Type)'
     train_window: "14d"
     flexibility: 0.9
     resolution: 1400
   - name: "windows_services_adapters_cpu"
-    query: 'floor(100 - (avg by(Type) (irate(wmi_cpu_time_total{mode="idle",Type=~"adapters|imageserver|harvester|dms|api|remotetasks|tvm"}[5m])) * 100)) > 5'
+    query: 'floor(100 - (avg by(Type) (irate(wmi_cpu_time_total{mode="idle"}[5m])) * 100)) > 5'
     train_window: "14d"
     flexibility: 0.9
     buffer_pct: 120
